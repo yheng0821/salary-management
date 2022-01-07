@@ -33,8 +33,6 @@ public class LoginDao {
                 user.setUserName(rst.getString(2));
                 user.setUserAcct(rst.getString(3));
             }
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
