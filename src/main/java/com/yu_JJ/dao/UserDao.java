@@ -25,6 +25,11 @@ public class UserDao {
     PreparedStatement preparedStatement = null;
 
     public List<User> queryUserList(String userName,int start,int end){
+        /*
+                    SELECT * FROM (
+                        SELECT * FROM `tb_user` tb LIMIT 7 OFFSET 2
+                    ) t WHERE t.user_name='袁华'
+         */
         String sql = "SELECT * FROM (\n" +
                 "\tSELECT * FROM `tb_user` tb LIMIT ? OFFSET ?\n" +
                 ") t WHERE t.user_name=?";
@@ -161,3 +166,4 @@ public class UserDao {
     }
 
 }
+

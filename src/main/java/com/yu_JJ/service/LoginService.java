@@ -5,7 +5,7 @@ import com.yu_JJ.bean.User;
 import com.yu_JJ.dao.LoginDao;
 import com.yu_JJ.dao.UserDao;
 
-import java.util.List;
+
 
 public class LoginService {
     private LoginDao loginDao = new LoginDao();

@@ -3,19 +3,12 @@ package com.yu_JJ.service;
 import com.yu_JJ.bean.Result;
 import com.yu_JJ.bean.User;
 import com.yu_JJ.dao.UserDao;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @className: UserService
- * @description: TODO 类描述
+ * @description: 用户登录服务
  * @author: yheng
  * @date: 2022/1/6
  **/
