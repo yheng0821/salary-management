@@ -1,5 +1,6 @@
 package com.yu_JJ.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 import java.util.Date;
@@ -18,4 +19,5 @@ public class User {
     private String creater;
     private Date updateTime;
     private String updater;
+
 }
