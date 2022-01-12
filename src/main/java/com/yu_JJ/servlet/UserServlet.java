@@ -103,9 +103,9 @@ public class UserServlet extends HttpServlet {
                 result = userService.queryUserById(id);
             }else if("queryUserList".equals(method)){         //批量查询，userName，开始行，截至行
                 String userName = req.getParameter("userName");
-                Integer start = Integer.valueOf(req.getParameter("page"));
-                Integer end = Integer.valueOf(req.getParameter("limit"));
-                result = userService.queryUserList(userName,start,end);
+                Integer page = Integer.valueOf(req.getParameter("page"));
+                Integer limit = Integer.valueOf(req.getParameter("limit"));
+                result = userService.queryUserList(userName,page,limit);
             }else if("login".equals(method)){                //用户登录验证
 //                JSONObject json = GetRequestJsonUtils.getRequestJsonObject(req);
 //                String userName = json.getString("userAcct");
@@ -113,13 +113,19 @@ public class UserServlet extends HttpServlet {
                 String userPwd = req.getParameter("userPwd");
                 logger.info("userAcut"+userAcct+"---"+"userPwd");
                 result = userService.loginCheck(userAcct,userPwd);
+            } else if ("queryAllUser".equals(method)){
+                Integer page = Integer.valueOf(req.getParameter("page"));
+                Integer limit = Integer.valueOf(req.getParameter("limit"));
+                result = userService.queryAllUser(page,limit);
             }
-            String resStr = new ObjectMapper().writeValueAsString(result);
-            out.write(resStr);
-        }else {
-            result.setRetMsg("请求不合法");
-            out.write("请求不合法");
+            else{
+                result.setRetMsg("请求不合法");
+                out.write("请求不合法");
+            }
         }
+
+        String resStr = new ObjectMapper().writeValueAsString(result);
+        out.write(resStr);
         out.flush();
         out.close();
         logger.info("up end");

@@ -57,9 +57,11 @@ public class UserDao {
                 user.setMail(rst.getString(6));
                 user.setTelephone(rst.getString(7));
                 user.setAddress(rst.getString(8));
-                user.setCreateTime(rst.getTimestamp(9).toString());
+                if(rst.getTimestamp(9) != null)
+                    user.setCreateTime(rst.getTimestamp(9).toString());
                 user.setCreater(rst.getString(10));
-                user.setUpdateTime(rst.getTimestamp(11).toString());
+                if(rst.getTimestamp(11) != null)
+                    user.setUpdateTime(rst.getTimestamp(11).toString());
                 user.setUpdater(rst.getString(12));
                 userList.add(user);
             }
@@ -89,9 +91,11 @@ public class UserDao {
                 user.setMail(rst.getString(6));
                 user.setTelephone(rst.getString(7));
                 user.setAddress(rst.getString(8));
-                user.setCreateTime(rst.getTimestamp(9).toString());
+                if(rst.getTimestamp(9) != null)
+                    user.setCreateTime(rst.getTimestamp(9).toString());
                 user.setCreater(rst.getString(10));
-                user.setUpdateTime(rst.getTimestamp(11).toString());
+                if(rst.getTimestamp(11) != null)
+                    user.setUpdateTime(rst.getTimestamp(11).toString());
                 user.setUpdater(rst.getString(12));
 //                Date time1=new Date(rst.getTimestamp(9).getTime()); //java.util.Date
 //                SimpleDateFormat formattime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -219,5 +223,40 @@ public class UserDao {
         return user;
     }
 
+    public List<User> queryAllUser(Integer page,Integer limit){
+        String sql = "SELECT * FROM tb_user order by user_id asc limit ?, ?";
+//        String sql = "SELECT * FROM tb_user WHERE user_name=? order by user_id asc ";
+        List<User> userList = new ArrayList<User>();
+        try {
+            conn = JDBCUtil.getConnection();
+            prst = conn.prepareStatement(sql);
+            prst.setInt(1,page);
+            prst.setInt(2,limit);
+            ResultSet rst = prst.executeQuery();
+            while (rst.next()){
+                User user = new User();
+                user.setUserId(rst.getInt(1));
+                user.setUserName(rst.getString(2));
+                user.setUserAcct(rst.getString(3));
+                user.setUserPwd(rst.getString(4));
+                user.setAlias(rst.getString(5));
+                user.setMail(rst.getString(6));
+                user.setTelephone(rst.getString(7));
+                user.setAddress(rst.getString(8));
+                if(rst.getTimestamp(9) != null)
+                    user.setCreateTime(rst.getTimestamp(9).toString());
+                user.setCreater(rst.getString(10));
+                if(rst.getTimestamp(11) != null)
+                    user.setUpdateTime(rst.getTimestamp(11).toString());
+                user.setUpdater(rst.getString(12));
+                userList.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            JDBCUtil.closeResource(conn,prst,rst);
+        }
+        return userList;
+    }
 }
 

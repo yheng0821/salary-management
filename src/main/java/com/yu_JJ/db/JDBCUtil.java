@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class JDBCUtil {
     //连接MySql数据库，用户名和密码都是root
-    private static String url = "jdbc:mysql://localhost:3306/02_dic_test1?characterEncoding=utf8&useUnicode=true" ;
+    private static String url = "jdbc:mysql://localhost:3306/02_dic_test1?characterEncoding=utf8&useUnicode=true&zeroDateTimeBehavior=convertToNull" ;
     private static String username = "user" ;
     private static String password = "123456789" ;
     private static String driver = "com.mysql.cj.jdbc.Driver";

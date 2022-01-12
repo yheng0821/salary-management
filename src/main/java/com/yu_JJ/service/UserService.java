@@ -18,49 +18,56 @@ public class UserService {
     public Result queryUserList(String userName, int start, int end){
         List<User> userList = userDao.queryUserList(userName, start, end);
         if (userList.size()>0){
-            return new Result("1","success",userList);
+            return new Result(1,"success",userList);
         }
-        return new Result("0","failed",null);
+        return new Result(0,"failed",null);
     }
 
     public Result queryUserById(Integer id){
         User user = userDao.queryUserById(id);
         if (user != null){
-            return new Result("1","success",user);
+            return new Result(1,"success",user);
         }
-        return new Result("0","failed",null);
+        return new Result(0,"failed",null);
     }
 
     public Result addUser(User user){
         int i = userDao.addUser(user);
         if (i > 0){
-            return new Result("1","success",user);
+            return new Result(1,"success",user);
         }
-        return new Result("0","failed",null);
+        return new Result(0,"failed",null);
     }
 
     public Result updateUser(User user){
         int i = userDao.updateUser(user);
         if (i > 0){
-            return new Result("1","success",user);
+            return new Result(1,"success",user);
         }
-        return new Result("0","failed",null);
+        return new Result(0,"failed",null);
     }
     public Result deleteUser(Integer id){
         int i = userDao.deleteUser(id);
         if (i > 0){
-            return new Result("1","success",null);
+            return new Result(1,"success",null);
         }
-        return new Result("0","failed",null);
+        return new Result(0,"failed",null);
     }
 
     public Result loginCheck(String userAcct, String userPwd){
         User user = userDao.loginCheck(userAcct, userPwd);
         if (user != null){
-            return new Result("1","success",user);
+            return new Result(1,"success",user);
         }
-        return new Result("0","failed",null);
+        return new Result(0,"failed",null);
 
+    }
+    public Result queryAllUser(Integer page,Integer limit){
+        List<User> userList = userDao.queryAllUser(page, limit);
+        if (userList.size()>0){
+            return new Result(1,"success",userList);
+        }
+        return new Result(0,"failed",null);
     }
 
     public static void main(String[] args){

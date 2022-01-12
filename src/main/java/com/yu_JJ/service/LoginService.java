@@ -13,9 +13,9 @@ public class LoginService {
     public Result loginCheck(String userAcct, String userPwd){
         User user = loginDao.loginCheck(userAcct, userPwd);
         if (user != null){
-            return new Result("1","success",user);
+            return new Result(1,"success",user);
         }
-        return new Result("0","failed",null);
+        return new Result(0,"failed",null);
 
     }
 
