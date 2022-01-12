@@ -43,13 +43,30 @@ public class UserServlet extends HttpServlet {
                 User user = new User();
                 JSONObject json = GetRequestJsonUtils.getRequestJsonObject(req);
                 Integer userId = json.getInteger("userId");
+                String userName = json.getString("userAcct");
                 String userAcct = json.getString("userAcct");
                 String userPwd = json.getString("userPwd");
-                String userName = json.getString("userName");
+                String alias = json.getString("alias");
+                String mail = json.getString("mail");
+                String telephone = json.getString("telephone");
+                String address = json.getString("address");
+                String createTime = json.getString("createTime");
+                String creater = json.getString("creater");
+                String updateTime = json.getString("updateTime");
+                String updater = json.getString("updater");
+
                 user.setUserId(userId);
                 user.setUserName(userName);
                 user.setUserAcct(userAcct);
                 user.setUserPwd(userPwd);
+                user.setAlias(alias);
+                user.setMail(mail);
+                user.setTelephone(telephone);
+                user.setAddress(address);
+                user.setCreateTime(createTime);
+                user.setCreater(creater);
+                user.setUpdateTime(updateTime);
+                user.setUpdater(updater);
                 result = userService.updateUser(user);
             }else if("delete".equals(method)){             //删除用户，通过id找到用户删除
                 Integer userId = Integer.valueOf(req.getParameter("userId"));
@@ -57,26 +74,45 @@ public class UserServlet extends HttpServlet {
             }else if("add".equals(method)){                //添加用户，不允许对id进行编辑，由逐渐自动递增
                 User user = new User();
                 JSONObject json = GetRequestJsonUtils.getRequestJsonObject(req);
+                String userName = json.getString("userAcct");
                 String userAcct = json.getString("userAcct");
                 String userPwd = json.getString("userPwd");
-                String userName = json.getString("userName");
+                String alias = json.getString("alias");
+                String mail = json.getString("mail");
+                String telephone = json.getString("telephone");
+                String address = json.getString("address");
+                String createTime = json.getString("createTime");
+                String creater = json.getString("creater");
+                String updateTime = json.getString("updateTime");
+                String updater = json.getString("updater");
+
                 user.setUserName(userName);
                 user.setUserAcct(userAcct);
                 user.setUserPwd(userPwd);
+                user.setAlias(alias);
+                user.setMail(mail);
+                user.setTelephone(telephone);
+                user.setAddress(address);
+                user.setCreateTime(createTime);
+                user.setCreater(creater);
+                user.setUpdateTime(updateTime);
+                user.setUpdater(updater);
                 result = userService.addUser(user);
             }else if("queryUserById".equals(method)){       //查询用户，通过主键查询
                 Integer id = Integer.valueOf(req.getParameter("userId"));
                 result = userService.queryUserById(id);
             }else if("queryUserList".equals(method)){         //批量查询，userName，开始行，截至行
                 String userName = req.getParameter("userName");
-                Integer start = Integer.valueOf(req.getParameter("start"));
-                Integer end = Integer.valueOf(req.getParameter("end"));
+                Integer start = Integer.valueOf(req.getParameter("page"));
+                Integer end = Integer.valueOf(req.getParameter("limit"));
                 result = userService.queryUserList(userName,start,end);
             }else if("login".equals(method)){                //用户登录验证
+//                JSONObject json = GetRequestJsonUtils.getRequestJsonObject(req);
+//                String userName = json.getString("userAcct");
                 String userAcct = req.getParameter("userAcct");
                 String userPwd = req.getParameter("userPwd");
+                logger.info("userAcut"+userAcct+"---"+"userPwd");
                 result = userService.loginCheck(userAcct,userPwd);
-
             }
             String resStr = new ObjectMapper().writeValueAsString(result);
             out.write(resStr);

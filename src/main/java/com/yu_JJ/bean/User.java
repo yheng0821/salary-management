@@ -15,9 +15,9 @@ public class User {
     private String mail;
     private String telephone;
     private String address;
-    private Date createTime;
+    private String createTime;
     private String creater;
-    private Date updateTime;
+    private String updateTime;
     private String updater;
 
 }
