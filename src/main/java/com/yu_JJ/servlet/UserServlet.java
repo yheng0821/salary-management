@@ -39,13 +39,17 @@ public class UserServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
 //        resp.setHeader("Content-type", "textml;charset=UTF-8");
 //        resp.setCharacterEncoding("UTF-8");
-        resp.setContentType("text/json; charset=UTF-8");
+        req.setCharacterEncoding("UTF-8");
+        resp.setHeader("ContentType", "text/json;charset=UTF-8");
         resp.setCharacterEncoding("UTF-8");
         String method = req.getParameter("method");
         Result result = null;
         if (!"".equals(method) || method!= null){
             if ("update".equals(method)){//更新用户操作，传入user的json数据，由id对指定用户更新
                 User user = new User();
+//                String userName = req.getParameter("userName");
+
+
                 JSONObject json = GetRequestJsonUtils.getRequestJsonObject(req);
 
                 Integer userId = json.getInteger("userId");
@@ -92,6 +96,8 @@ public class UserServlet extends HttpServlet {
                 String updateTime = json.getString("updateTime");
                 String updater = json.getString("updater");
 
+
+
                 user.setUserName(userName);
                 user.setUserAcct(userAcct);
                 user.setUserPwd(userPwd);
@@ -117,7 +123,6 @@ public class UserServlet extends HttpServlet {
 //                String userName = json.getString("userAcct");
                 String userAcct = req.getParameter("userAcct");
                 String userPwd = req.getParameter("userPwd");
-                logger.info("userAcut"+userAcct+"---"+"userPwd");
                 result = userService.loginCheck(userAcct,userPwd);
             } else if ("queryAllUser".equals(method)){
                 Integer page = Integer.valueOf(req.getParameter("page"));

@@ -33,40 +33,36 @@
     <div class="layui-form-item">
         <label class="layui-form-label required">用户账号</label>
         <div class="layui-input-block">
-            <input type="text" name="userAcct" lay-verify="required" lay-reqtext="账号不能为空" placeholder="请输入账号" value="" class="layui-input">
+            <input type="text" name="userAcct" lay-verify="required" lay-reqtext="账号不能为空" placeholder="请输入账号" value="" class="layui-input" id="userAcct">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">密码</label>
         <div class="layui-input-block">
-            <input type="text" name="userPwd" lay-verify="required" lay-reqtext="密码不能为空" placeholder="请输入密码" value="" class="layui-input">
+            <input type="text" name="userPwd" lay-verify="required" lay-reqtext="密码不能为空" placeholder="请输入密码" value="" class="layui-input" id="userPwd">
         </div>
     </div>
+
     <div class="layui-form-item">
-        <label class="layui-form-label required">别名</label>
+        <label class="layui-form-label">别名</label>
         <div class="layui-input-block">
-            <input type="number" name="alias" placeholder="请输入" value="" class="layui-input">
+            <input type="email" name="alias" placeholder="请输入邮箱" value="" class="layui-input" id="alias">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">邮箱</label>
         <div class="layui-input-block">
-            <input type="email" name="email" placeholder="请输入邮箱" value="" class="layui-input">
+            <input type="email" name="email" placeholder="请输入邮箱" value="" class="layui-input" id="mail">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">手机</label>
         <div class="layui-input-block">
-            <input type="text" name="telephone" placeholder="请输入手机" value="" class="layui-input">
+            <input type="text" name="telephone" placeholder="请输入手机" value="" class="layui-input" id="telephone">
         </div>
     </div>
-<!--    <div class="layui-form-item layui-form-text">-->
-<!--        <label class="layui-form-label">备注信息</label>-->
-<!--        <div class="layui-input-block">-->
-<!--            <textarea name="remark" class="layui-textarea" placeholder="请输入备注信息"></textarea>-->
-<!--        </div>-->
-<!--    </div>-->
+
 
     <div class="layui-form-item" >
         <div class="layui-input-block">
@@ -89,8 +85,27 @@
         //监听提交
         form.on('submit(saveBtn)', function (data) {
 
+            var userId = document.getElementById("edit_userId").value;
+            var userName = document.getElementById("userName").value;
+            var userAcct = document.getElementById("userAcct").value;
+            var userPwd = document.getElementById("userPwd").value;
+            var alias = document.getElementById("alias").value;
+            var mail = document.getElementById("mail").value;
+            var telephone = document.getElementById("telephone").value;
+
+            var user = new Object();
+            user.userId = userId;
+            user.userName = userName;
+            user.userAcct = userAcct;
+            user.userPwd = userPwd;
+            user.alias = alias;
+            user.mail = mail;
+            user.telephone = telephone;
+
+            var json = JSON.stringify(user);
+
             var index = layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
+                title: '最终的提交信息',
             }, function () {
 
                 // 关闭弹出层
@@ -103,6 +118,9 @@
 
 
 
+
+
+            // JSON.stringify("{sa:1}");//jigg
             $.ajax({
                 // type: "get",
                 url: "/mavenWeb_war/user?method=update",
@@ -111,12 +129,15 @@
                 contentType: "application/json;charset=uft-8",
                 type: "POST",//方法
                 // data: JSON.stringify($('#edit-form').serialize()),
+                // data:$('#edit-form').serialize(),
+                // data:data.field,
 
-                data: $('#edit-form'),
-                // data: {"userName":"userName"},
-                success:function(d){
+                data: json,
+                // data:{data:}
+                success: function (result) {
+                    if (result && result.retCode == 1) {
 
-
+                    }
                 },
                 error:function(d){
                     layer.msg("错误码为200");

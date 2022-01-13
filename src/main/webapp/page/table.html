@@ -202,18 +202,7 @@
                 });
 
 
-                // $.ajax({
-                //     // type: "get",
-                //     url: "/mavenWeb_war/user?method=queryUserById",
-                //     // data:data.field,
-                //     // dataType:"json",
-                //     type: "POST",//方法
-                //     // url: "/mavenWeb_war/user?method=login" ,//表单接收url
-                //     data: 'userId='+data.userId,
-                //     success:function(result){
-                //
-                //     },
-                // });
+
 
                 $(window).on("resize", function () {
                     layer.full(index);
@@ -221,6 +210,34 @@
                 return false;
             } else if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
+
+
+                    var userId = obj.data.userId;
+
+                    $.ajax({
+                        // type: "get",
+                        url: "/mavenWeb_war/user?method=delete",
+                        // data:data.field,
+                        dataType:"json",
+                        // contentType: "application/json;charset=uft-8",
+                        type: "POST",//方法
+                        // data: JSON.stringify($('#edit-form').serialize()),
+                        // data:$('#edit-form').serialize(),
+                        // data:data.field,
+                        data:{userId:userId},
+                        // data:{data:}
+                        success: function (result) {
+                            if (result && result.retCode == 1) {
+
+                            }
+                        },
+                        error:function(d){
+                            layer.msg("错误码为200");
+                        }
+                    });
+
+
+
                     obj.del();
                     layer.close(index);
                 });
