@@ -29,23 +29,28 @@ public class UserDao {
 
     //批量查询
     public List<User> queryUserList(String userName,int page,int limit){
-        /*
-                    SELECT * FROM (
-                        SELECT * FROM `tb_user` tb LIMIT 7 OFFSET 2
-                    ) t WHERE t.user_name='袁华'
-         */
-//        String sql = "SELECT * FROM (\n" +
-//                "\tSELECT * FROM `tb_user` tb LIMIT ? OFFSET ?\n" +
-//                ") t WHERE t.user_name=?";
-        String sql = "SELECT * FROM tb_user WHERE user_name=? order by user_id asc limit ?, ?";
+
+//        String sql = "SELECT * FROM tb_user WHERE user_name=? order by user_id asc limit ?, ?";
 //        String sql = "SELECT * FROM tb_user WHERE user_name=? order by user_id asc ";
         List<User> userList = new ArrayList<User>();
+        String sql = null;
         try {
             conn = JDBCUtil.getConnection();
-            prst = conn.prepareStatement(sql);
-            prst.setString(1,userName);
-            prst.setInt(2,page);
-            prst.setInt(3,limit);
+            if("".equals(userName) || userName==null){
+                conn = JDBCUtil.getConnection();
+                sql = "select * from `02_dic_test1`.tb_user limit ?,?";
+                prst = conn.prepareStatement(sql);
+                prst.setInt(1,page);
+                prst.setInt(2,limit);
+            }else {
+                sql = "SELECT * FROM tb_user WHERE user_name like ? limit ?,?";
+                prst = conn.prepareStatement(sql);
+                prst.setString(1,"%"+userName+"%");
+                prst.setInt(2,page);
+                prst.setInt(3,limit);
+            }
+
+
             ResultSet rst = prst.executeQuery();
             while (rst.next()){
                 User user = new User();
@@ -97,14 +102,6 @@ public class UserDao {
                 if(rst.getTimestamp(11) != null)
                     user.setUpdateTime(rst.getTimestamp(11).toString());
                 user.setUpdater(rst.getString(12));
-//                Date time1=new Date(rst.getTimestamp(9).getTime()); //java.util.Date
-//                SimpleDateFormat formattime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//                String pubtime = formattime.format(time1);
-//                logger.info(time1.toString());
-////                Date date = DateUtil.StrToDate(pubtime);
-////                System.out.println(date.toString());
-//                user.setCreateTime(time1);
-
 
             }else {
                 user = null;
@@ -230,7 +227,7 @@ public class UserDao {
         try {
             conn = JDBCUtil.getConnection();
             prst = conn.prepareStatement(sql);
-            prst.setInt(1,page);
+            prst.setInt(1,(page-1)*limit);
             prst.setInt(2,limit);
             ResultSet rst = prst.executeQuery();
             while (rst.next()){
@@ -257,6 +254,26 @@ public class UserDao {
             JDBCUtil.closeResource(conn,prst,rst);
         }
         return userList;
+    }
+
+    public Integer countAllUser(){
+        Integer count = 0;
+        String sql = "SELECT count(*) FROM tb_user";
+//        String sql = "SELECT * FROM tb_user WHERE user_name=? order by user_id asc ";
+        List<User> userList = new ArrayList<User>();
+        try {
+            conn = JDBCUtil.getConnection();
+            prst = conn.prepareStatement(sql);
+            ResultSet rst = prst.executeQuery();
+            if (rst.next()){
+                count = rst.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            JDBCUtil.closeResource(conn,prst,rst);
+        }
+        return count;
     }
 }
 

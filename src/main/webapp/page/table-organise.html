@@ -41,11 +41,6 @@
 
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
-
-
-
-
-        <div id="test1"></div>
         <script type="text/html" id="currentTableBar">
             <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
@@ -61,7 +56,6 @@
             table = layui.table;
 
         table.render({
-
             elem: '#currentTableId',
             // url: '../api/table.json',
             url: '/mavenWeb_war/user?method=queryAllUser',
@@ -72,22 +66,13 @@
                 layEvent: 'LAYTABLE_TIPS',
                 icon: 'layui-icon-tips'
             }],
-
-
-
-
             parseData:function (res) {
             return{
                 "status":res.retCode,
-                "count":res.retCount,
                 "msg":res.retMsg,
                 "data":res.retObj
                 };
             },
-
-
-
-
             //解析返回的数据
             response: {
                 statusName: 'status', //规定数据状态的字段名称，默认：code
@@ -108,13 +93,31 @@
                 {field: 'createTime', width: 100, title: '创建时间'},
                 {field: 'creater', width: 100, title: '创建人'},
                 {field: 'updateTime', width: 100, title: '更新时间'},
+                // {field: 'updater', width: 80, title: '更新人'},
+                // {field: 'sex', width: 80, title: '性别', sort: true},
+                // {field: 'city', width: 80, title: '城市'},
+                // {field: 'sign', title: '签名', minWidth: 150},
+                // {field: 'experience', width: 80, title: '积分', sort: true},
+                // {field: 'score', width: 80, title: '评分', sort: true},
+                // {field: 'classify', width: 80, title: '职业'},
+                // {field: 'wealth', width: 135, title: '财富', sort: true},
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
             limit: 10,
             page: true,
             skin: 'line',
-
+            done: function(){//只有一个done：function,再函数里面分别做处理就ok，多个done，就只有最后一个生效。
+                //如果是异步请求数据方式，res即为你接口返回的信息。
+                //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                $("[data-field='stu']").children().each(function () {
+                    if($(this).text()=='1'){
+                        $(this).text("启用")
+                    }else if($(this).text()=='2'){
+                        $(this).text("冻结")
+                    }
+                })
+            }
         });
 
         // 监听搜索操作
@@ -172,13 +175,9 @@
         });
 
         table.on('tool(currentTableFilter)', function (obj) {
-            // var data = obj;
-            var value = obj.value //得到修改后的值
-                ,data  = obj.data //得到所在行所有键值
-                ,field = obj.field; //得到字段
-            console.log('[ID: '+ data.userId +'] ' + ' 字段更改')
+            var data = obj.data;
             if (obj.event === 'edit') {
-                console.log('edit编辑')
+
                 var index = layer.open({
                     title: '编辑用户',
                     type: 2,
@@ -186,35 +185,8 @@
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-
                     content: '../page/table/edit.html',
-                    success: function (layero, index) {
-                        //向layer页面传值，传值主要代码
-                        var body = layer.getChildFrame('body', index);
-
-                        //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
-                        //var iframeWin = window[layero.find('iframe')[0]['name']];
-
-                        //将弹窗页面中属性名name="edit_userId"的标签赋值
-                        body.find("[id='edit_userId']").val(data.userId);
-                    }
-
                 });
-
-
-                // $.ajax({
-                //     // type: "get",
-                //     url: "/mavenWeb_war/user?method=queryUserById",
-                //     // data:data.field,
-                //     // dataType:"json",
-                //     type: "POST",//方法
-                //     // url: "/mavenWeb_war/user?method=login" ,//表单接收url
-                //     data: 'userId='+data.userId,
-                //     success:function(result){
-                //
-                //     },
-                // });
-
                 $(window).on("resize", function () {
                     layer.full(index);
                 });
@@ -228,8 +200,6 @@
         });
 
     });
-
-
 </script>
 
 </body>

@@ -8,17 +8,23 @@ import java.util.List;
 public class Result<T>{
     private Integer retCode;//0表示失败，，1表示成功
     private String retMsg;
-    private Integer count;
+    private Integer retCount;
     private T retObj;
 
     public Result(Integer retCode) {
         this.retCode = retCode;
     }
 
-    public Result(Integer retCode, String retMsg, Integer count, T retObj) {
+    public Result(Integer retCode, String retMsg, T retObj) {
         this.retCode = retCode;
         this.retMsg = retMsg;
-        this.count = count;
+        this.retObj = retObj;
+    }
+
+    public Result(Integer retCode, String retMsg, Integer retCount, T retObj) {
+        this.retCode = retCode;
+        this.retMsg = retMsg;
+        this.retCount = retCount;
         this.retObj = retObj;
     }
 }

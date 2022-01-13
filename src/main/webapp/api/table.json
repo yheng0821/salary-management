@@ -1,8 +1,8 @@
 {
-  "code": 0,
-  "msg": "",
-  "count": 1000,
-  "data": [
+  "retCode": 0,
+  "recMsg": "",
+  "retCount": 1000,
+  "retObj": [
     {
       "id": 10000,
       "username": "user-0",

@@ -34,24 +34,24 @@ public class UserService {
     public Result addUser(User user){
         int i = userDao.addUser(user);
         if (i > 0){
-            return new Result(1,"success",1,user);
+            return new Result(1,"success",user);
         }
-        return new Result(0,"failed",0,null);
+        return new Result(0,"failed",null);
     }
 
     public Result updateUser(User user){
         int i = userDao.updateUser(user);
         if (i > 0){
-            return new Result(1,"success",1,user);
+            return new Result(1,"success",user);
         }
-        return new Result(0,"failed",0,null);
+        return new Result(0,"failed",null);
     }
     public Result deleteUser(Integer id){
         int i = userDao.deleteUser(id);
         if (i > 0){
-            return new Result(1,"success",1,null);
+            return new Result(1,"success",null);
         }
-        return new Result(0,"failed",0,null);
+        return new Result(0,"failed",null);
     }
 
     public Result loginCheck(String userAcct, String userPwd){
@@ -64,8 +64,9 @@ public class UserService {
     }
     public Result queryAllUser(Integer page,Integer limit){
         List<User> userList = userDao.queryAllUser(page, limit);
-        if (userList.size()>0){
-            return new Result(1,"success",userList.size(),userList);
+        int count = userDao.countAllUser();
+        if (count>0){
+            return new Result(1,"success",count,userList);
         }
         return new Result(0,"failed",0,null);
     }

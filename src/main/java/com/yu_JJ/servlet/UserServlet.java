@@ -32,18 +32,24 @@ import java.io.PrintWriter;
 public class UserServlet extends HttpServlet {
     private UserService userService = new UserService();
     private static final Logger logger = LoggerFactory.getLogger(UserServlet.class);
+
+
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter out = resp.getWriter();
-        resp.setContentType("text/json;charset=UTF-8");
+//        resp.setHeader("Content-type", "textml;charset=UTF-8");
+//        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/json; charset=UTF-8");
+        resp.setCharacterEncoding("UTF-8");
         String method = req.getParameter("method");
         Result result = null;
         if (!"".equals(method) || method!= null){
             if ("update".equals(method)){//更新用户操作，传入user的json数据，由id对指定用户更新
                 User user = new User();
                 JSONObject json = GetRequestJsonUtils.getRequestJsonObject(req);
+
                 Integer userId = json.getInteger("userId");
-                String userName = json.getString("userAcct");
+                String userName = json.getString("userName");
                 String userAcct = json.getString("userAcct");
                 String userPwd = json.getString("userPwd");
                 String alias = json.getString("alias");
@@ -74,7 +80,7 @@ public class UserServlet extends HttpServlet {
             }else if("add".equals(method)){                //添加用户，不允许对id进行编辑，由逐渐自动递增
                 User user = new User();
                 JSONObject json = GetRequestJsonUtils.getRequestJsonObject(req);
-                String userName = json.getString("userAcct");
+                String userName = json.getString("userName");
                 String userAcct = json.getString("userAcct");
                 String userPwd = json.getString("userPwd");
                 String alias = json.getString("alias");
@@ -128,7 +134,6 @@ public class UserServlet extends HttpServlet {
         out.write(resStr);
         out.flush();
         out.close();
-        logger.info("up end");
     }
 
 }

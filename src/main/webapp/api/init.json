@@ -17,17 +17,9 @@
       "child": [
         {
           "title": "主页模板",
-          "href": "",
+          "href": "page/welcome-1.html",
           "icon": "fa fa-home",
-          "target": "_self",
-          "child": [
-            {
-              "title": "主页一",
-              "href": "page/welcome-1.html",
-              "icon": "fa fa-tachometer",
-              "target": "_self"
-            }
-          ]
+          "target": "_self"
         },
         {
           "title": "菜单管理",
@@ -47,7 +39,7 @@
 
         {
           "title": "统计分析",
-          "href": "page/table.html",
+          "href": "page/table-static.html",
           "icon": "fa fa-file-text",
           "target": "_self"
         },
@@ -59,13 +51,13 @@
         },
         {
           "title": "组织管理",
-          "href": "page/table.html",
+          "href": "page/table-organise.html",
           "icon": "fa fa-file-text",
           "target": "_self"
         },
         {
           "title": "薪资管理",
-          "href": "page/table.html",
+          "href": "page/table-salary.html",
           "icon": "fa fa-file-text",
           "target": "_self"
         }
