@@ -188,18 +188,13 @@
 
                         //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
                         //var iframeWin = window[layero.find('iframe')[0]['name']];
-
-
                         console.log(data.salaryId);
                         //将弹窗页面中属性名name="edit_userId"的标签赋值
                         body.find("[id='edit_salaryId']").val(data.salaryId);
                         body.find("[id='edit_userId']").val(data.userId);
                         body.find("[id='userName']").val(data.userName);
-                        body.find("[id='userAcct']").val(data.userAcct);
-                        body.find("[id='userPwd']").val(data.userPwd);
-                        body.find("[id='alias']").val(data.alias);
-                        body.find("[id='mail']").val(data.mail);
-                        body.find("[id='telephone']").val(data.telephone);
+                        body.find("[id='monthId']").val(data.monthId);
+                        body.find("[id='salary']").val(data.salary);
                     }
 
                 });

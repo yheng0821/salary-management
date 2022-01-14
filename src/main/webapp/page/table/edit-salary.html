@@ -19,33 +19,36 @@
     <div class="layui-form-item">
         <label class="layui-form-label required">薪水ID</label>
         <div class="layui-input-block">
-            <input type="readonly" name="userId"  value="" class="layui-input" id="edit_salaryId">
+            <input disabled name="salaryId"  value="" class="layui-input" id="edit_salaryId">
+            <tip>不允许更改</tip>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">用户ID</label>
         <div class="layui-input-block">
-            <input type="text" name="userId"  value="" class="layui-input" id="edit_userId">
+            <input disabled name="userId"  value="" class="layui-input" id="edit_userId">
+            <tip>不允许更改</tip>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">用户名</label>
         <div class="layui-input-block">
-            <input type="text" name="userName" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" value="" class="layui-input" id="userName">
+            <input disabled name="userName" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" value="" class="layui-input" id="userName">
+            <tip>不允许更改</tip>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">月份ID</label>
         <div class="layui-input-block">
-            <input type="text" name="userName" lay-verify="required" lay-reqtext="月份不能为空" placeholder="请输入月份" value="" class="layui-input" id="monthId">
+            <input type="text" name="monthId" lay-verify="required" lay-reqtext="月份不能为空" placeholder="请输入月份" value="" class="layui-input" id="monthId">
         </div>
-    </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">用户薪水</label>
         <div class="layui-input-block">
-            <input type="text" name="userAcct" lay-verify="required" lay-reqtext="薪水不能为空" placeholder="请输入薪水" value="" class="layui-input" id="salary">
+            <input type="text" name="salary" lay-verify="required"  value="" lay-reqtext="薪水不能为空" class="layui-input" id="salary">
         </div>
+    </div>
     </div>
 
 

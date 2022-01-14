@@ -20,4 +20,6 @@ public class User {
     private String updateTime;
     private String updater;
 
+    private Salary organiseName;
+
 }
