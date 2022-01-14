@@ -1,11 +1,14 @@
 package com.yu_JJ.bean;
 
+import lombok.Data;
+
 /**
  * @className: Organise
  * @description: TODO 类描述
  * @author: yheng
  * @date: 2022/1/14
  **/
+@Data
 public class Organise {
     private Integer orgId;
     private Integer parOrgId;
