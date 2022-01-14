@@ -21,7 +21,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">用户姓名</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="username" value="root" autocomplete="off" class="layui-input">
+                                <input type="text" name="username" value="java" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -64,7 +64,7 @@
 
             elem: '#currentTableId',
             // url: '../api/table.json',
-            url: '/mavenWeb_war/salary?method=queryAllSalary',
+            url: '/mavenWeb_war/salary?method=querySalaryList',
 
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
@@ -98,16 +98,11 @@
             } ,
             cols: [[
                 {type: "checkbox", width: 50},
-                {field: 'monthId', width: 120, title: '月份ID', sort: true},
+                {field: 'salaryId', width: 100, title: '薪水编号',sort: true},
+                {field: 'monthId', width: 120, title: '月份ID'},
                 {field: 'userName', width: 100, title: '用户名'},
                 {field: 'salary', width: 100, title: '当前薪资'},
                 {field: 'createTime', width: 100, title: '创建时间'},
-                // {field: 'mail', width: 100, title: '用户邮箱'},
-                // {field: 'telephone', width: 100, title: '用户账号'},
-                // {field: 'address', width: 100, title: '用户账号'},
-                // {field: 'createTime', width: 100, title: '创建时间'},
-                // {field: 'creater', width: 100, title: '创建人'},
-                // {field: 'updateTime', width: 100, title: '更新时间'},
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
@@ -119,21 +114,21 @@
 
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {
-            // var result = $('.layui-input').val()
-            // layer.alert(result, {
-            //     title: '最终的搜索信息'
-            // });
-            // //执行搜索重载
-            // table.reload('currentTableId', {
-            //     url:"/mavenWeb_war/user?method=queryUserList",
-            //     page: {
-            //         curr: 0
-            //     }
-            //     , where: {
-            //         userName: result,
-            //     },
-            //     limit:10
-            // }, 'data');
+            var result = $('.layui-input').val()
+            layer.alert(result, {
+                title: '最终的搜索信息'
+            });
+            //执行搜索重载
+            table.reload('currentTableId', {
+                url:"/mavenWeb_war/salary?method=querySalaryList",
+                page: {
+                    curr: 0
+                }
+                , where: {
+                    userName: result,
+                },
+                limit:10
+            }, 'data');
 
             return false;
         });
@@ -153,7 +148,7 @@
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '../page/table/add.html',
+                    content: '../page/table/add-salary.html',
                 });
                 $(window).on("resize", function () {
                     layer.full(index);
@@ -194,8 +189,17 @@
                         //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
                         //var iframeWin = window[layero.find('iframe')[0]['name']];
 
+
+                        console.log(data.salaryId);
                         //将弹窗页面中属性名name="edit_userId"的标签赋值
+                        body.find("[id='edit_salaryId']").val(data.salaryId);
                         body.find("[id='edit_userId']").val(data.userId);
+                        body.find("[id='userName']").val(data.userName);
+                        body.find("[id='userAcct']").val(data.userAcct);
+                        body.find("[id='userPwd']").val(data.userPwd);
+                        body.find("[id='alias']").val(data.alias);
+                        body.find("[id='mail']").val(data.mail);
+                        body.find("[id='telephone']").val(data.telephone);
                     }
 
                 });
@@ -211,11 +215,12 @@
                 layer.confirm('真的删除行么', function (index) {
 
 
-                    var userId = obj.data.userId;
+                    var salaryId = obj.data.salaryId;
+                    console.log(salaryId);
 
                     $.ajax({
                         // type: "get",
-                        url: "/mavenWeb_war/user?method=delete",
+                        url: "/mavenWeb_war/salary?method=deleteSalary",
                         // data:data.field,
                         dataType:"json",
                         // contentType: "application/json;charset=uft-8",
@@ -223,7 +228,7 @@
                         // data: JSON.stringify($('#edit-form').serialize()),
                         // data:$('#edit-form').serialize(),
                         // data:data.field,
-                        data:{userId:userId},
+                        data:{salaryId:salaryId},
                         // data:{data:}
                         success: function (result) {
                             if (result && result.retCode == 1) {

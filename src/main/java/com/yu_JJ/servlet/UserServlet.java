@@ -36,16 +36,17 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/json;charset=UTF-8");
+        resp.setCharacterEncoding("UTF-8");
         PrintWriter out = resp.getWriter();
 //        resp.setHeader("Content-type", "textml;charset=UTF-8");
 //        resp.setCharacterEncoding("UTF-8");
-        req.setCharacterEncoding("UTF-8");
-        resp.setHeader("ContentType", "text/json;charset=UTF-8");
-        resp.setCharacterEncoding("UTF-8");
+
         String method = req.getParameter("method");
         Result result = null;
-        if (!"".equals(method) || method!= null){
-            if ("update".equals(method)){//更新用户操作，传入user的json数据，由id对指定用户更新
+        if (!"".equals(method) || method != null) {
+            if ("update".equals(method)) {//更新用户操作，传入user的json数据，由id对指定用户更新
                 User user = new User();
 //                String userName = req.getParameter("userName");
 
@@ -78,10 +79,10 @@ public class UserServlet extends HttpServlet {
                 user.setUpdateTime(updateTime);
                 user.setUpdater(updater);
                 result = userService.updateUser(user);
-            }else if("delete".equals(method)){             //删除用户，通过id找到用户删除
+            } else if ("delete".equals(method)) {             //删除用户，通过id找到用户删除
                 Integer userId = Integer.valueOf(req.getParameter("userId"));
                 result = userService.deleteUser(userId);
-            }else if("add".equals(method)){                //添加用户，不允许对id进行编辑，由逐渐自动递增
+            } else if ("add".equals(method)) {                //添加用户，不允许对id进行编辑，由逐渐自动递增
                 User user = new User();
                 JSONObject json = GetRequestJsonUtils.getRequestJsonObject(req);
                 String userName = json.getString("userName");
@@ -97,7 +98,6 @@ public class UserServlet extends HttpServlet {
                 String updater = json.getString("updater");
 
 
-
                 user.setUserName(userName);
                 user.setUserAcct(userAcct);
                 user.setUserPwd(userPwd);
@@ -110,26 +110,25 @@ public class UserServlet extends HttpServlet {
                 user.setUpdateTime(updateTime);
                 user.setUpdater(updater);
                 result = userService.addUser(user);
-            }else if("queryUserById".equals(method)){       //查询用户，通过主键查询
+            } else if ("queryUserById".equals(method)) {       //查询用户，通过主键查询
                 Integer id = Integer.valueOf(req.getParameter("userId"));
                 result = userService.queryUserById(id);
-            }else if("queryUserList".equals(method)){         //批量查询，userName，开始行，截至行
+            } else if ("queryUserList".equals(method)) {         //批量查询，userName，开始行，截至行
                 String userName = req.getParameter("userName");
                 Integer page = Integer.valueOf(req.getParameter("page"));
                 Integer limit = Integer.valueOf(req.getParameter("limit"));
-                result = userService.queryUserList(userName,page,limit);
-            }else if("login".equals(method)){                //用户登录验证
+                result = userService.queryUserList(userName, page, limit);
+            } else if ("login".equals(method)) {                //用户登录验证
 //                JSONObject json = GetRequestJsonUtils.getRequestJsonObject(req);
 //                String userName = json.getString("userAcct");
                 String userAcct = req.getParameter("userAcct");
                 String userPwd = req.getParameter("userPwd");
-                result = userService.loginCheck(userAcct,userPwd);
-            } else if ("queryAllUser".equals(method)){
+                result = userService.loginCheck(userAcct, userPwd);
+            } else if ("queryAllUser".equals(method)) {
                 Integer page = Integer.valueOf(req.getParameter("page"));
                 Integer limit = Integer.valueOf(req.getParameter("limit"));
-                result = userService.queryAllUser(page,limit);
-            }
-            else{
+                result = userService.queryAllUser(page, limit);
+            } else {
                 result.setRetMsg("请求不合法");
                 out.write("请求不合法");
             }

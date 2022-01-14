@@ -16,7 +16,7 @@ public class SalaryTest {
     @Test
     public void testSalary(){
         SalaryDao salaryDao = new SalaryDao();
-        List<Salary> salaries = salaryDao.queryAllSalary(1,10);
+        List<Salary> salaries = salaryDao.querySalaryList("java",1,10);
         System.out.println(salaries);
     }
 }

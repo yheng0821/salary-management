@@ -27,25 +27,42 @@ public class SalaryDao {
     private PreparedStatement prst = null;
     private String sql = null;
 
-    public List<Salary> queryAllSalary(Integer page,Integer limit){
+    public List<Salary> querySalaryList(String userName,Integer page,Integer limit){
         List<Salary> salaryList = new ArrayList<>();
-        Salary salary = new Salary();
-        sql = "SELECT s.month_id '月份ID',u.user_name '用户名称',s.salary 当月薪资 ,s.create_time '创建时间', s.user_id \n" +
-                "FROM tb_salary s,tb_user u\n" +
-                "WHERE s.user_id=u.user_id\n" +
-                "LIMIT ?,?" ;
+
         try {
-            conn = JDBCUtil.getConnection();
-            prst  = conn.prepareStatement(sql);
-            prst.setInt(1,(page-1)*limit);
-            prst.setInt(2,limit);
+            if("".equals(userName) || userName==null){
+                conn = JDBCUtil.getConnection();
+                sql = "SELECT s.salary_id,s.month_id '月份ID',u.user_name '用户名称',s.salary 当月薪资 ,s.create_time '创建时间', s.user_id \n" +
+                        "FROM tb_salary s,tb_user u\n" +
+                        "WHERE s.user_id=u.user_id\n" +
+                        "LIMIT ?,?" ;
+                prst = conn.prepareStatement(sql);
+                prst.setInt(1,(page-1)*limit);
+                prst.setInt(2,limit);
+            }else {
+                sql = "SELECT s.salary_id,s.month_id '月份ID',u.user_name '用户名称',s.salary 当月薪资 ,s.create_time '创建时间', s.user_id \n" +
+                        "FROM tb_salary s,tb_user u\n" +
+                        "WHERE s.user_id=u.user_id\n" +
+                        "AND u.user_name LIKE ?\n" +
+                        "LIMIT ?,?";
+                conn = JDBCUtil.getConnection();
+                prst = conn.prepareStatement(sql);
+                prst.setString(1,"%"+userName+"%");
+                prst.setInt(2,(page-1)*limit);
+                prst.setInt(3,limit);
+            }
             rst = prst.executeQuery();
             while(rst.next()){
-                salary.setMonthId(rst.getString(1));
-                salary.setUserName(rst.getString(2));
-                salary.setSalary(rst.getFloat(3));
-                salary.setCreateTime(rst.getTimestamp(4).toString());
-                salary.setUserId(Integer.valueOf(rst.getString(5)));
+                Salary salary = new Salary();
+                salary.setSalaryId(rst.getInt(1));
+                salary.setMonthId(rst.getString(2));
+                salary.setUserName(rst.getString(3));
+                salary.setSalary(rst.getFloat(4));
+                if (rst.getTimestamp(5) != null){
+                    salary.setCreateTime(rst.getTimestamp(5).toString());
+                }
+                salary.setUserId(Integer.valueOf(rst.getString(6)));
                 salaryList.add(salary);
             }
             return salaryList;
@@ -57,7 +74,8 @@ public class SalaryDao {
 
     public Integer countAllSalary(){
         Integer count = 0;
-        String sql = "SELECT count(*) FROM tb_salary";
+        String sql = "SELECT count(*) FROM tb_salary s,tb_user u\n" +
+                "WHERE s.user_id=u.user_id";
 //        String sql = "SELECT * FROM tb_user WHERE user_name=? order by user_id asc ";
         List<Salary> salaryList = new ArrayList<Salary>();
         try {
@@ -111,17 +129,63 @@ public class SalaryDao {
         try {
             conn = JDBCUtil.getConnection();
             prst = conn.prepareStatement(sql);
-            prst.setString(1,user.getUserName());
-            prst.setString(2,user.getUserAcct());
-            prst.setString(3,user.getUserPwd());
-            prst.setString(4,user.getAlias());
-            prst.setString(5,user.getMail());
-            prst.setString(6,user.getTelephone());
-            prst.setString(7,user.getAddress());
-            prst.setTimestamp(8, DateUtil.StrToDate(user.getCreateTime()));
-            prst.setString(9, user.getCreater());
-            prst.setTimestamp(10,DateUtil.StrToDate(user.getUpdateTime()));
-            prst.setString(11,user.getUpdater());
+
+
+
+
+
+            prst.setInt(1,salary.getUserId());
+            prst.setString(2,salary.getMonthId());
+            prst.setFloat(3,salary.getSalary());
+
+            prst.setTimestamp(4, DateUtil.StrToDate(salary.getCreateTime()));
+            prst.setString(5, salary.getCreater());
+            prst.setTimestamp(6,DateUtil.StrToDate(salary.getUpdateTime()));
+            prst.setString(7,salary.getUpdater());
+            int i =  prst.executeUpdate();
+            if(i > 0){
+                return 1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            JDBCUtil.closeResource(conn,prst,rst);
+        }
+        return 0;
+    }
+
+    public int updateSalary(Salary salary){
+//        User user_to_update = queryUserById(user.getUserId());//user_to_update数据库中存在的user，user是前面传入的user，user中的数据写入数据库
+        String sql = "update tb_salary set user_id=?,month_id=?,salary=?,create_time=?,creater=?,update_time=?,updater=? where salary_id=?";
+        try {
+            conn = JDBCUtil.getConnection();
+            prst = conn.prepareStatement(sql);
+            prst.setInt(1,salary.getUserId());
+            prst.setString(2,salary.getMonthId());
+            prst.setFloat(3,salary.getSalary());
+            prst.setString(4, salary.getCreateTime());
+            prst.setString(5, salary.getCreater());
+            prst.setString(6, salary.getUpdateTime());
+            prst.setString(7, salary.getUpdater());
+            prst.setInt(8, salary.getSalaryId());
+            int i =  prst.executeUpdate();
+            if(i > 0){
+                return 1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            JDBCUtil.closeResource(conn,prst,rst);
+        }
+        return 0;
+    }
+
+    public int deleteSalary(Integer id){
+        String sql = "delete from tb_salary where salary_id=?";
+        try {
+            conn = JDBCUtil.getConnection();
+            prst = conn.prepareStatement(sql);
+            prst.setInt(1,id);
             int i =  prst.executeUpdate();
             if(i > 0){
                 return 1;

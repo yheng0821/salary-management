@@ -136,7 +136,7 @@
                 // data:{data:}
                 success: function (result) {
                     if (result && result.retCode == 1) {
-                        window.opener.location.reload();
+                        parent.parent.location.reload();
                     }
                 },
                 error:function(d){

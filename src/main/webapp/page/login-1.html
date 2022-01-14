@@ -102,13 +102,15 @@
                 // type: "get",
                 url: "/mavenWeb_war/user?method=login",
                 // data:data.field,
-                // dataType:"json",
+                dataType:"json",
                 type: "POST",//方法
-                // url: "/mavenWeb_war/user?method=login" ,//表单接收url
+
                 data: $('#login-form').serialize(),
-                // data:$('#login-form').serialize(),
+
                 success:function(d){
-                    if(d.retCode ==1){
+                    console.log(d)
+                    console.log(d.retCode)
+                    if(d.retCode == 1){
                         layer.msg('登录成功', function () {
                             window.location = '../index.html';
                         });

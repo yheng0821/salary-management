@@ -1,8 +1,12 @@
 package com.yu_JJ.servlet;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yu_JJ.bean.Result;
+import com.yu_JJ.bean.Salary;
+import com.yu_JJ.bean.User;
 import com.yu_JJ.service.SalaryService;
+import com.yu_JJ.utils.GetRequestJsonUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,11 +37,63 @@ public class SalaryServlet extends HttpServlet {
 
 
         if (!"".equals(method) || method!= null){
-            if ("queryAllSalary".equals(method)){
+            if ("querySalaryList".equals(method)){
+                String userName = req.getParameter("userName");
                 Integer page = Integer.valueOf(req.getParameter("page"));
                 Integer limit = Integer.valueOf(req.getParameter("limit"));
-                rst =  salaryService.querySalaryList(page,limit);
+                rst =  salaryService.querySalaryList(userName,page,limit);
 
+            }else if("querySalaryById".equals(method)){
+                Integer id = Integer.valueOf(req.getParameter("salaryId"));
+                rst = salaryService.querySalaryById(id);
+            }else if("addSalary".equals(method)){
+                Salary salary = new Salary();
+                JSONObject json = GetRequestJsonUtils.getRequestJsonObject(req);
+                Integer userId = Integer.valueOf(json.getString("userId"));
+                String monthId = json.getString("monthId");
+                Float salary_money = json.getFloat("salary");
+                String createTime = json.getString("createTime");
+                String creater = json.getString("creater");
+                String updateTime = json.getString("updateTime");
+                String updater = json.getString("updater");
+
+                salary.setUserId(userId);
+                salary.setMonthId(monthId);
+                salary.setSalary(salary_money);
+                salary.setCreateTime(createTime);
+                salary.setCreater(creater);
+                salary.setUpdateTime(updateTime);
+                salary.setUpdater(updater);
+                rst = salaryService.addSalary(salary);
+            }else if("updateSalary".equals(method)){
+                Salary salary = new Salary();
+
+                JSONObject json = GetRequestJsonUtils.getRequestJsonObject(req);
+
+                Integer salaryId = json.getInteger("salaryId");
+                Integer userId = json.getInteger("userId");
+                String monthId = json.getString("monthId");
+                Float salary_money = Float.valueOf(json.getString("salary"));
+                String createTime = json.getString("createTime");
+                String creater = json.getString("creater");
+                String updateTime = json.getString("updateTime");
+                String updater = json.getString("updater");
+
+                salary.setSalaryId(salaryId);
+                salary.setUserId(userId);
+                salary.setMonthId(monthId);
+                salary.setSalary(salary_money);
+                salary.setCreateTime(createTime);
+                salary.setCreater(creater);
+                salary.setUpdateTime(updateTime);
+                salary.setUpdater(updater);
+                rst = salaryService.updateSalary(salary);
+            }else if("deleteSalary".equals(method)){
+                Integer salaryId = Integer.valueOf(req.getParameter("salaryId"));
+                rst = salaryService.deleteSalary(salaryId);
+            } else{
+                rst.setRetMsg("请求不合法");
+                out.write("请求不合法");
             }
         }
 
