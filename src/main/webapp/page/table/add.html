@@ -111,21 +111,17 @@
 
             });
 
-
-            // JSON.stringify("{sa:1}");//jigg
             $.ajax({
-                // type: "get",
+
                 url: "/mavenWeb_war/user?method=add",
-                // data:data.field,
+
                 dataType:"json",
                 contentType: "application/json;charset=uft-8",
                 type: "POST",//方法
-                // data: JSON.stringify($('#edit-form').serialize()),
-                // data:$('#edit-form').serialize(),
-                // data:data.field,
+
 
                 data: json,
-                // data:{data:}
+
                 success: function (result) {
                     if (result && result.retCode == 1) {
                         parent.parent.location.reload();

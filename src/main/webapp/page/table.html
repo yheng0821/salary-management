@@ -64,7 +64,7 @@
 
             elem: '#currentTableId',
             // url: '../api/table.json',
-            url: '/mavenWeb_war/user?method=queryAllUser',
+            url: '/mavenWeb_war/user?method=queryUserList',
 
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
@@ -128,7 +128,7 @@
             table.reload('currentTableId', {
                 url:"/mavenWeb_war/user?method=queryUserList",
                 page: {
-                    curr: 0
+                    curr: 1
                 }
                 , where: {
                     userName: result,
@@ -227,9 +227,7 @@
                         dataType:"json",
                         // contentType: "application/json;charset=uft-8",
                         type: "POST",//方法
-                        // data: JSON.stringify($('#edit-form').serialize()),
-                        // data:$('#edit-form').serialize(),
-                        // data:data.field,
+
                         data:{userId:userId},
                         // data:{data:}
                         success: function (result) {

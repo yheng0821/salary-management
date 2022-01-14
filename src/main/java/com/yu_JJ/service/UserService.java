@@ -1,6 +1,7 @@
 package com.yu_JJ.service;
 
 import com.yu_JJ.bean.Result;
+import com.yu_JJ.bean.Salary;
 import com.yu_JJ.bean.User;
 import com.yu_JJ.dao.UserDao;
 
@@ -15,10 +16,17 @@ import java.util.List;
 public class UserService {
     private UserDao userDao = new UserDao();
 
-    public Result queryUserList(String userName, int start, int end){
-        List<User> userList = userDao.queryUserList(userName, start, end);
-        if (userList.size()>0){
-            return new Result(1,"success",userList.size(),userList);
+    public Result queryUserList(String userName, int page, int limit){
+        List<User> userList = userDao.queryUserList(userName,page, limit);
+        int count = 0;
+        if("".equals(userName) || userName==null){
+            count = userDao.countAllUser();
+
+        }else {
+            count = userList.size();
+        }
+        if (count>0){
+            return new Result(1,"sucess",count,userList);
         }
         return new Result(0,"failed",0,null);
     }

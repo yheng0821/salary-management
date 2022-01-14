@@ -28,25 +28,26 @@ public class SalaryServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PrintWriter out = resp.getWriter();
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/json;charset=UTF-8");
         resp.setCharacterEncoding("UTF-8");
+        PrintWriter out = resp.getWriter();
+
         String method = req.getParameter("method");
         Result rst = null;
 
 
-        if (!"".equals(method) || method!= null){
-            if ("querySalaryList".equals(method)){
+        if (!"".equals(method) || method != null) {
+            if ("querySalaryList".equals(method)) {
                 String userName = req.getParameter("userName");
                 Integer page = Integer.valueOf(req.getParameter("page"));
                 Integer limit = Integer.valueOf(req.getParameter("limit"));
-                rst =  salaryService.querySalaryList(userName,page,limit);
+                rst = salaryService.querySalaryList(userName, page, limit);
 
-            }else if("querySalaryById".equals(method)){
+            } else if ("querySalaryById".equals(method)) {
                 Integer id = Integer.valueOf(req.getParameter("salaryId"));
                 rst = salaryService.querySalaryById(id);
-            }else if("addSalary".equals(method)){
+            } else if ("addSalary".equals(method)) {
                 Salary salary = new Salary();
                 JSONObject json = GetRequestJsonUtils.getRequestJsonObject(req);
                 Integer userId = Integer.valueOf(json.getString("userId"));
@@ -65,7 +66,7 @@ public class SalaryServlet extends HttpServlet {
                 salary.setUpdateTime(updateTime);
                 salary.setUpdater(updater);
                 rst = salaryService.addSalary(salary);
-            }else if("updateSalary".equals(method)){
+            } else if ("updateSalary".equals(method)) {
                 Salary salary = new Salary();
 
                 JSONObject json = GetRequestJsonUtils.getRequestJsonObject(req);
@@ -88,15 +89,14 @@ public class SalaryServlet extends HttpServlet {
                 salary.setUpdateTime(updateTime);
                 salary.setUpdater(updater);
                 rst = salaryService.updateSalary(salary);
-            }else if("deleteSalary".equals(method)){
+            } else if ("deleteSalary".equals(method)) {
                 Integer salaryId = Integer.valueOf(req.getParameter("salaryId"));
                 rst = salaryService.deleteSalary(salaryId);
-            } else{
+            } else {
                 rst.setRetMsg("请求不合法");
                 out.write("请求不合法");
             }
         }
-
 
 
         String resStr = new ObjectMapper().writeValueAsString(rst);

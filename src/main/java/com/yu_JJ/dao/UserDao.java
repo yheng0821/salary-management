@@ -40,7 +40,7 @@ public class UserDao {
                 conn = JDBCUtil.getConnection();
                 sql = "select * from `02_dic_test1`.tb_user limit ?,?";
                 prst = conn.prepareStatement(sql);
-                prst.setInt(1,page);
+                prst.setInt(1,(page-1)*limit);
                 prst.setInt(2,limit);
             }else {
                 sql = "SELECT * FROM tb_user WHERE user_name like ? limit ?,?";
