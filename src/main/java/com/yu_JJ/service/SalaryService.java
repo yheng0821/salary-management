@@ -14,10 +14,11 @@ import java.util.List;
  **/
 public class SalaryService {
     private SalaryDao salaryDao = new SalaryDao();
-    public Result querySalaryList(){
-        List<Salary> salaries = salaryDao.querySalaryList();
+    public Result querySalaryList(Integer page,Integer limit){
+        List<Salary> salaries = salaryDao.queryAllSalary(page, limit);
+        int count = salaryDao.countAllSalary();
         if (salaries.size()>0){
-            return new Result(1,"sucess",salaries.size(),salaries);
+            return new Result(1,"sucess",count,salaries);
         }
         return new Result(0,"failed",0,null);
     }

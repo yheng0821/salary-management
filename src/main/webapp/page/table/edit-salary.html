@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form" id="edit-form">
+    <div class="layui-form-item">
+        <label class="layui-form-label required">用户ID</label>
+        <div class="layui-input-block">
+            <input type="text" name="userId"  value="" class="layui-input" id="edit_userId">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">用户名</label>
+        <div class="layui-input-block">
+            <input type="text" name="userName" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" value="" class="layui-input" id="userName">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">月份ID</label>
+        <div class="layui-input-block">
+            <input type="text" name="userName" lay-verify="required" lay-reqtext="月份不能为空" placeholder="请输入用户名" value="" class="layui-input" id="monthId">
+        </div>
+    </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">用户薪水</label>
+        <div class="layui-input-block">
+            <input type="text" name="userAcct" lay-verify="required" lay-reqtext="账号不能为空" placeholder="请输入账号" value="" class="layui-input" id="salary">
+        </div>
+    </div>
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label required">密码</label>-->
+<!--        <div class="layui-input-block">-->
+<!--            <input type="text" name="userPwd" lay-verify="required" lay-reqtext="密码不能为空" placeholder="请输入密码" value="" class="layui-input" id="userPwd">-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">别名</label>-->
+<!--        <div class="layui-input-block">-->
+<!--            <input type="email" name="alias" placeholder="请输入邮箱" value="" class="layui-input" id="alias">-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">邮箱</label>-->
+<!--        <div class="layui-input-block">-->
+<!--            <input type="email" name="email" placeholder="请输入邮箱" value="" class="layui-input" id="mail">-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">手机</label>-->
+<!--        <div class="layui-input-block">-->
+<!--            <input type="text" name="telephone" placeholder="请输入手机" value="" class="layui-input" id="telephone">-->
+<!--        </div>-->
+<!--    </div>-->
+
+
+    <div class="layui-form-item" >
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+        </div>
+    </div>
+</div>
+</div>
+<script src="../../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$;
+
+        //
+
+
+
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+
+            var userId = document.getElementById("edit_userId").value;
+            var userName = document.getElementById("userName").value;
+            var salary = document.getElementById("salary").value;
+            var monthId = document.getElementById("monthId").value;
+            // var userPwd = document.getElementById("userPwd").value;
+            // var alias = document.getElementById("alias").value;
+            // var mail = document.getElementById("mail").value;
+            // var telephone = document.getElementById("telephone").value;
+
+            var user = new Object();
+            user.userId = userId;
+            user.userName = userName;
+            user.salary = salary;
+            user.monthId = monthId;
+
+
+            var json = JSON.stringify(user);
+
+            var index = layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息',
+            }, function () {
+                location.reload();
+                // 关闭弹出层
+                layer.close(index);
+
+                var iframeIndex = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(iframeIndex);
+
+            });
+
+
+
+
+
+            // JSON.stringify("{sa:1}");//jigg
+            $.ajax({
+                // type: "get",
+                url: "/mavenWeb_war/salary?method=update",
+                // data:data.field,
+                dataType:"json",
+                contentType: "application/json;charset=uft-8",
+                type: "POST",//方法
+                // data: JSON.stringify($('#edit-form').serialize()),
+                // data:$('#edit-form').serialize(),
+                // data:data.field,
+
+                data: json,
+                // data:{data:}
+                success: function (result) {
+                    if (result && result.retCode == 1) {
+                        window.opener.location.reload();
+                    }
+                },
+                error:function(d){
+                    layer.msg("错误码为200");
+                }
+            });
+
+
+
+
+
+            return false;
+
+        });
+
+    });
+</script>
+</body>
+</html>

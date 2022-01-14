@@ -33,9 +33,10 @@ public class SalaryServlet extends HttpServlet {
 
 
         if (!"".equals(method) || method!= null){
-            if ("querySalaryList".equals(method)){
-
-                    rst =  salaryService.querySalaryList();
+            if ("queryAllSalary".equals(method)){
+                Integer page = Integer.valueOf(req.getParameter("page"));
+                Integer limit = Integer.valueOf(req.getParameter("limit"));
+                rst =  salaryService.querySalaryList(page,limit);
 
             }
         }

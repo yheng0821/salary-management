@@ -18,6 +18,7 @@ public class Salary {
     private String creater;
     private String dateTime;
     private String updater;
+    private String updateTime;
 
     private String userName;
 }
