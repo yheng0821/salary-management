@@ -34,18 +34,17 @@ public class OrganiseDao {
         try {
             if("".equals(orgName) || orgName==null){
                 conn = JDBCUtil.getConnection();
-                sql = "SELECT DISTINCT o.org_id '组织ID',o.org_name '组织名称',o.org_path '组织路径',o.create_time '创建时间'\n" +
+                sql = "SELECT DISTINCT o.org_id '组织ID',o.org_name '组织名称',o.org_path '组织路径',o.create_time '创建时间',o.creater\n" +
                         "FROM tb_org o,tb_user u,tb_user_org_rel uo\n" +
-                        "WHERE o.org_id=uo.org_id\n" +
                         "LIMIT ?,?";
                 prst = conn.prepareStatement(sql);
                 prst.setInt(1,(page-1)*limit);
                 prst.setInt(2,limit);
             }else {
-                sql = "SELECT DISTINCT o.org_id '组织ID',o.org_name '组织名称',o.org_path '组织路径',o.create_time '创建时间'\n" +
+                sql = "SELECT DISTINCT o.org_id '组织ID',o.org_name '组织名称',o.org_path '组织路径',o.create_time '创建时间',o.creater '创建人'\n" +
                         "FROM tb_org o,tb_user u,tb_user_org_rel uo\n" +
-                        "WHERE o.org_id=uo.org_id\n" +
-                        "AND o.org_name=?\n" +
+//                        "WHERE o.org_id=uo.org_id\n" +
+                        "WHERE o.org_name LIKE ?\n" +
                         "LIMIT ?,?";
                 conn = JDBCUtil.getConnection();
                 prst = conn.prepareStatement(sql);
@@ -62,6 +61,7 @@ public class OrganiseDao {
                 if (rst.getTimestamp(4) != null){
                     organise.setCreateTime(rst.getTimestamp(4).toString());
                 }
+                organise.setCreater(rst.getString(5));
                 organiseList.add(organise);
             }
             return organiseList;

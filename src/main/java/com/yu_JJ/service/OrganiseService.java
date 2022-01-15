@@ -7,7 +7,11 @@ import com.yu_JJ.bean.Salary;
 import com.yu_JJ.bean.User;
 import com.yu_JJ.dao.OrganiseDao;
 import com.yu_JJ.dao.UserDao;
+import com.yu_JJ.utils.DateUtil;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,7 +47,7 @@ public class OrganiseService {
     }
 
     public Result addOrganise(Organise organise){
-
+        organise.setCreateTime(DateUtil.getCurrentTime());
         int i = organiseDao.addOrganise(organise);
         if (i > 0){
             return new Result(1,"success",organise);

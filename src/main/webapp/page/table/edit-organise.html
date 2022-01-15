@@ -17,38 +17,32 @@
 <body>
 <div class="layui-form layuimini-form" id="edit-form">
     <div class="layui-form-item">
-        <label class="layui-form-label required">薪水ID</label>
+        <label class="layui-form-label required">组织ID</label>
         <div class="layui-input-block">
-            <input disabled name="salaryId"  value="" class="layui-input" id="edit_salaryId">
+            <input disabled name="orgId"  value="" class="layui-input" id="edit_orgId">
             <tip>不允许更改</tip>
         </div>
     </div>
+
     <div class="layui-form-item">
-        <label class="layui-form-label required">用户ID</label>
+        <label class="layui-form-label required">组织名称</label>
         <div class="layui-input-block">
-            <input disabled name="userId"  value="" class="layui-input" id="edit_userId">
+            <input type="text" name="orgName" lay-verify="required" lay-reqtext="组织名称不能为空" placeholder="请输入组织名称" value="" class="layui-input" id="orgName">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">组织路径</label>
+        <div class="layui-input-block">
+            <input type="text" name="orgPath" lay-verify="required"  value="" lay-reqtext="orgPath不能为空" class="layui-input" id="orgPath">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">创建时间</label>
+        <div class="layui-input-block">
+            <input disabled name="createTime" lay-verify="required"  value="" lay-reqtext="创建时间不能为空" class="layui-input" id="createTime">
             <tip>不允许更改</tip>
         </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label required">用户名</label>
-        <div class="layui-input-block">
-            <input disabled name="userName" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" value="" class="layui-input" id="userName">
-            <tip>不允许更改</tip>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label required">月份ID</label>
-        <div class="layui-input-block">
-            <input type="text" name="monthId" lay-verify="required" lay-reqtext="月份不能为空" placeholder="请输入月份" value="" class="layui-input" id="monthId">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label required">用户薪水</label>
-        <div class="layui-input-block">
-            <input type="text" name="salary" lay-verify="required"  value="" lay-reqtext="薪水不能为空" class="layui-input" id="salary">
-        </div>
-    </div>
     </div>
 
 
@@ -72,27 +66,25 @@
 
         //监听提交
         form.on('submit(saveBtn)', function (data) {
-            var salaryId  =  document.getElementById("edit_salaryId").value;
-            var userId = document.getElementById("edit_userId").value;
-            var userName = document.getElementById("userName").value;
-            var salary = document.getElementById("salary").value;
-            var monthId = document.getElementById("monthId").value;
+            var orgId  =  document.getElementById("edit_orgId").value;
+            var orgName = document.getElementById("orgName").value;
+            var orgPath = document.getElementById("orgPath").value;
+            var createTime = document.getElementById("createTime").value;
 
 
-            var user = new Object();
-            user.salaryId = salaryId;
-            user.userId = userId;
-            user.userName = userName;
-            user.salary = salary;
-            user.monthId = monthId;
+            var orgnise = new Object();
+            orgnise.orgId = orgId;
+            orgnise.orgName = orgName;
+            orgnise.orgPath = orgPath;
+            orgnise.createTime = createTime;
 
 
-            var json = JSON.stringify(user);
+            var json = JSON.stringify(orgnise);
 
 
             $.ajax({
                 // type: "get",
-                url: "/mavenWeb_war/salary?method=updateSalary",
+                url: "/mavenWeb_war/organise?method=updateOrganise",
                 // data:data.field,
                 dataType:"json",
                 contentType: "application/json;charset=uft-8",

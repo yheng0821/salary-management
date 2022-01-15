@@ -21,7 +21,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">用户姓名</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="username" value="root" autocomplete="off" class="layui-input">
+                                <input type="text" name="username" value="开发" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -58,7 +58,7 @@
         table.render({
             elem: '#currentTableId',
             // url: '../api/table.json',
-            url: '/mavenWeb_war/user?method=queryAllUser',
+            url: '/mavenWeb_war/organise?method=queryOrganiseList',
 
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
@@ -67,12 +67,14 @@
                 icon: 'layui-icon-tips'
             }],
             parseData:function (res) {
-            return{
-                "status":res.retCode,
-                "msg":res.retMsg,
-                "data":res.retObj
+                return{
+                    "status":res.retCode,
+                    "count":res.retCount,
+                    "msg":res.retMsg,
+                    "data":res.retObj
                 };
             },
+
             //解析返回的数据
             response: {
                 statusName: 'status', //规定数据状态的字段名称，默认：code
@@ -83,24 +85,11 @@
             } ,
             cols: [[
                 {type: "checkbox", width: 50},
-                {field: 'userId', width: 120, title: '用户ID', sort: true},
-                {field: 'userAcct', width: 100, title: '用户名'},
-                {field: 'userPwd', width: 100, title: '用户账号'},
-                {field: 'alias', width: 100, title: '用户别名'},
-                {field: 'mail', width: 100, title: '用户邮箱'},
-                {field: 'telephone', width: 100, title: '用户账号'},
-                {field: 'address', width: 100, title: '用户账号'},
-                {field: 'createTime', width: 100, title: '创建时间'},
-                {field: 'creater', width: 100, title: '创建人'},
-                {field: 'updateTime', width: 100, title: '更新时间'},
-                // {field: 'updater', width: 80, title: '更新人'},
-                // {field: 'sex', width: 80, title: '性别', sort: true},
-                // {field: 'city', width: 80, title: '城市'},
-                // {field: 'sign', title: '签名', minWidth: 150},
-                // {field: 'experience', width: 80, title: '积分', sort: true},
-                // {field: 'score', width: 80, title: '评分', sort: true},
-                // {field: 'classify', width: 80, title: '职业'},
-                // {field: 'wealth', width: 135, title: '财富', sort: true},
+                {field: 'orgId', width: 150, title: '组织ID', sort: true},
+                {field: 'orgName', width: 150, title: '组织名称'},
+                {field: 'orgPath', width: 150, title: '组织路径'},
+                {field: 'createTime', width: 200, title: '创建时间'},
+                {field: 'creater', width: 150, title: '创建人'},
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
@@ -129,12 +118,12 @@
             });
             //执行搜索重载
             table.reload('currentTableId', {
-                url:"/mavenWeb_war/user?method=queryUserList",
+                url:"/mavenWeb_war/organise?method=queryOrganiseList",
                 page: {
                     curr: 0
                 }
                 , where: {
-                    userName: result,
+                    orgName: result,
                 },
                 limit:10
             }, 'data');
@@ -157,7 +146,7 @@
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '../page/table/add.html',
+                    content: '../page/table/add-organise.html',
                 });
                 $(window).on("resize", function () {
                     layer.full(index);
@@ -175,9 +164,12 @@
         });
 
         table.on('tool(currentTableFilter)', function (obj) {
-            var data = obj.data;
-            if (obj.event === 'edit') {
 
+            var value = obj.value //得到修改后的值
+                ,data  = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            console.log('[orgID: '+ data.orgId +'] ' + ' 字段更改')
+            if (obj.event === 'edit') {
                 var index = layer.open({
                     title: '编辑用户',
                     type: 2,
@@ -185,14 +177,64 @@
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '../page/table/edit.html',
-                });
+                    content: '../page/table/edit-organise.html',
+                    success: function (layero, index) {
+                        //向layer页面传值，传值主要代码
+                        var body = layer.getChildFrame('body', index);
+
+                        //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+                        //var iframeWin = window[layero.find('iframe')[0]['name']];
+                        console.log(data.orgId);
+                        //将弹窗页面中属性名name="edit_userId"的标签赋值
+                        body.find("[id='edit_orgId']").val(data.orgId);
+                        body.find("[id='orgName']").val(data.orgName);
+                        body.find("[id='orgPath']").val(data.orgPath);
+                        body.find("[id='createTime']").val(data.createTime);
+                            }
+                        });
                 $(window).on("resize", function () {
+
+
                     layer.full(index);
                 });
                 return false;
             } else if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
+                    var orgId = obj.data.orgId;
+                    console.log(orgId);
+
+                    $.ajax({
+                        // type: "get",
+                        url: "/mavenWeb_war/organise?method=deleteOrganise",
+                        // data:data.field,
+                        dataType:"json",
+                        // contentType: "application/json;charset=uft-8",
+                        type: "POST",//方法
+                        // data: JSON.stringify($('#edit-form').serialize()),
+                        // data:$('#edit-form').serialize(),
+                        // data:data.field,
+                        data:{orgId:orgId},
+                        // data:{data:}
+                        success: function (result) {
+                            if (result && result.retCode == 1) {
+                                var index = layer.alert(JSON.stringify(data.field), {
+                                    title: '最终的提交信息'
+                                }, function () {
+
+                                    // 关闭弹出层
+                                    layer.close(index);
+                                    parent.parent.location.reload();
+                                    var iframeIndex = parent.layer.getFrameIndex(window.name);
+                                    parent.layer.close(iframeIndex);
+
+                                });
+                            }
+                        },
+                        error:function(d){
+                            layer.msg("错误码为200");
+                        }
+                    });
+
                     obj.del();
                     layer.close(index);
                 });

@@ -2,9 +2,11 @@ package com.yu_JJ.utils;
 
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * @className: DateUtil
@@ -33,15 +35,16 @@ public class DateUtil {
         catch (NullPointerException e) {
             return null;
         }
-//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        Date date = null;
-//        try {
-//            date = format.parse(date_str);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-//        return sqlDate;
     }
 
+    public static String getCurrentTime(){
+        Date date = new Date(System.currentTimeMillis());
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String format = dateFormat.format(date);
+        return format;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(DateUtil.getCurrentTime());
+    }
 }

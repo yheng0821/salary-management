@@ -40,14 +40,8 @@ public class OrganiseServlet extends HttpServlet {
             if ("queryOrganiseList".equals(method)) {
                 String orgName = req.getParameter("orgName");
 
-                Integer page = null;
-                Integer limit = null;
-                try {
-                    page = Integer.valueOf(req.getParameter("page"));
-                    limit = Integer.valueOf(req.getParameter("limit"));
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                }
+                Integer page = Integer.valueOf(req.getParameter("page"));
+                Integer limit = Integer.valueOf(req.getParameter("limit"));
 
                 rst = organiseService.queryOrganiseList(orgName, page, limit);
 

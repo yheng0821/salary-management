@@ -15,49 +15,43 @@
     </style>
 </head>
 <body>
-<div class="layui-form layuimini-form" id="edit-form">
+<div class="layui-form layuimini-form">
     <div class="layui-form-item">
-        <label class="layui-form-label required">薪水ID</label>
+        <label class="layui-form-label required">组织parOrgId</label>
         <div class="layui-input-block">
-            <input disabled name="salaryId"  value="" class="layui-input" id="edit_salaryId">
-            <tip>不允许更改</tip>
+            <input type="text" name="parOrgId" lay-verify="required" lay-reqtext="组织parOrgId不能为空" placeholder="请输入组织parOrgId" value="" class="layui-input" id="parOrgId">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label required">用户ID</label>
+        <label class="layui-form-label required">组织名称</label>
         <div class="layui-input-block">
-            <input disabled name="userId"  value="" class="layui-input" id="edit_userId">
-            <tip>不允许更改</tip>
+            <input type="text" name="orgName" lay-verify="required" lay-reqtext="组织名称不能为空" placeholder="请输入组织名称" value="" class="layui-input" id="orgName">
         </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label required">用户名</label>
-        <div class="layui-input-block">
-            <input disabled name="userName" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" value="" class="layui-input" id="userName">
-            <tip>不允许更改</tip>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label required">月份ID</label>
-        <div class="layui-input-block">
-            <input type="text" name="monthId" lay-verify="required" lay-reqtext="月份不能为空" placeholder="请输入月份" value="" class="layui-input" id="monthId">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label required">用户薪水</label>
-        <div class="layui-input-block">
-            <input type="text" name="salary" lay-verify="required"  value="" lay-reqtext="薪水不能为空" class="layui-input" id="salary">
-        </div>
-    </div>
     </div>
 
-
-    <div class="layui-form-item" >
+    <div class="layui-form-item">
+        <label class="layui-form-label required">组织路径</label>
+        <div class="layui-input-block">
+            <input type="text" name="orgPath" lay-verify="required" lay-reqtext="组织路径不能为空" placeholder="请输入组织路径" value="" class="layui-input" id="orgPath">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">组织level</label>
+        <div class="layui-input-block">
+            <input type="text" name="orgLevel" lay-verify="required" lay-reqtext="组织level不能为空" placeholder="请输入组织level" value="" class="layui-input" id="orgLevel">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">创建人</label>
+        <div class="layui-input-block">
+            <input type="text" name="org"   placeholder="请输入组织路径" value="" class="layui-input" id="creater">
+        </div>
+    </div>
+    <div class="layui-form-item">
         <div class="layui-input-block">
             <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
         </div>
     </div>
-</div>
 </div>
 <script src="../../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
 <script>
@@ -66,33 +60,32 @@
             layer = layui.layer,
             $ = layui.$;
 
-        //
-
-
-
         //监听提交
         form.on('submit(saveBtn)', function (data) {
-            var salaryId  =  document.getElementById("edit_salaryId").value;
-            var userId = document.getElementById("edit_userId").value;
-            var userName = document.getElementById("userName").value;
-            var salary = document.getElementById("salary").value;
-            var monthId = document.getElementById("monthId").value;
 
+            var parOrgId = document.getElementById("parOrgId").value;
+            var orgName = document.getElementById("orgName").value;
+            var orgPath = document.getElementById("orgPath").value;
+            var orgLevel = document.getElementById("orgLevel").value;
+            var creater = document.getElementById("creater").value;
 
             var user = new Object();
-            user.salaryId = salaryId;
-            user.userId = userId;
-            user.userName = userName;
-            user.salary = salary;
-            user.monthId = monthId;
-
+            user.parOrgId = parOrgId;
+            user.orgName = orgName;
+            user.orgPath = orgPath;
+            user.orgLevel = orgLevel;
+            user.creater = creater;
 
             var json = JSON.stringify(user);
 
 
+
+
+
+            // JSON.stringify("{sa:1}");//jigg
             $.ajax({
                 // type: "get",
-                url: "/mavenWeb_war/salary?method=updateSalary",
+                url: "/mavenWeb_war/organise?method=addOrganise",
                 // data:data.field,
                 dataType:"json",
                 contentType: "application/json;charset=uft-8",
@@ -123,12 +116,7 @@
                 }
             });
 
-
-
-
-
             return false;
-
         });
 
     });
