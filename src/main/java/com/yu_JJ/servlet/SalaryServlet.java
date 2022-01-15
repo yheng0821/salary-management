@@ -92,6 +92,8 @@ public class SalaryServlet extends HttpServlet {
             } else if ("deleteSalary".equals(method)) {
                 Integer salaryId = Integer.valueOf(req.getParameter("salaryId"));
                 rst = salaryService.deleteSalary(salaryId);
+            } else if ("getSaleryByOrganise".equals(method)) {
+                rst = salaryService.getSaleryByOrganise();
             } else {
                 rst.setRetMsg("请求不合法");
                 out.write("请求不合法");

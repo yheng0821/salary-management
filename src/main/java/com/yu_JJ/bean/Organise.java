@@ -20,4 +20,6 @@ public class Organise {
     private String updateTime;
     private String updater;
 
+    private Integer salary;
+
 }

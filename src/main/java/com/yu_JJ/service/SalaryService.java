@@ -1,5 +1,6 @@
 package com.yu_JJ.service;
 
+import com.yu_JJ.bean.Organise;
 import com.yu_JJ.bean.Result;
 import com.yu_JJ.bean.Salary;
 import com.yu_JJ.bean.User;
@@ -86,6 +87,13 @@ public class SalaryService {
         int i = salaryDao.deleteSalary(id);
         if (i > 0){
             return new Result(1,"success",null);
+        }
+        return new Result(0,"failed",null);
+    }
+    public Result getSaleryByOrganise(){
+        List<Organise> saleryByOrganise = salaryDao.getSaleryByOrganise();
+        if (saleryByOrganise.size() > 0){
+            return new Result(1,"sucess",saleryByOrganise.size(),saleryByOrganise);
         }
         return new Result(0,"failed",null);
     }

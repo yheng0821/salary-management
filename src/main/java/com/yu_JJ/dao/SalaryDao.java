@@ -1,5 +1,6 @@
 package com.yu_JJ.dao;
 
+import com.yu_JJ.bean.Organise;
 import com.yu_JJ.bean.Salary;
 import com.yu_JJ.bean.User;
 import com.yu_JJ.db.JDBCUtil;
@@ -198,5 +199,30 @@ public class SalaryDao {
         return 0;
     }
 
-
+    public List<Organise> getSaleryByOrganise(){
+        List<Organise> organiseList = new ArrayList<>();
+        String  sql = "SELECT sum(s.salary) ,o.org_name\n" +
+                "FROM tb_salary s,tb_user u,tb_user_org_rel uo,tb_org o\n" +
+                "WHERE s.user_id=u.user_id\n" +
+                "AND u.user_id=uo.user_id\n" +
+                "and uo.org_id=o.org_id\n" +
+                "GROUP BY o.org_name\n";
+        try {
+            conn = JDBCUtil.getConnection();
+            prst = conn.prepareStatement(sql);
+            ResultSet resultSet = prst.executeQuery();
+            while(resultSet.next()){
+                Organise organise = new Organise();
+                organise.setSalary(resultSet.getInt(1));
+                organise.setOrgName(resultSet.getString(2));
+                organiseList.add(organise);
+            }
+            return organiseList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            JDBCUtil.closeResource(conn,prst,rst);
+        }
+        return null;
+    }
 }
