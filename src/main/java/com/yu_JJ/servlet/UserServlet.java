@@ -124,6 +124,9 @@ public class UserServlet extends HttpServlet {
                 String userAcct = req.getParameter("userAcct");
                 String userPwd = req.getParameter("userPwd");
                 result = userService.loginCheck(userAcct, userPwd);
+                if (result.getRetCode() == 1){
+                    req.getSession().setAttribute("userSession", (User)result.getRetObj());
+                }
             } else if ("queryAllUser".equals(method)) {
                 Integer page = Integer.valueOf(req.getParameter("page"));
                 Integer limit = Integer.valueOf(req.getParameter("limit"));

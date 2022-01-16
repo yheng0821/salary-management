@@ -143,12 +143,11 @@
                         var index = layer.alert(JSON.stringify(data.field), {
                             title: '最终的提交信息'
                         }, function () {
-
                             // 关闭弹出层
                             layer.close(index);
                             var iframeIndex = parent.layer.getFrameIndex(window.name);
                             parent.layer.close(iframeIndex);
-                            parent.parent.location.reload();
+                            parent.location.reload();
                         });
 
                     }
@@ -162,7 +161,7 @@
 
 
 
-            return false;
+
 
         });
 

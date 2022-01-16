@@ -122,9 +122,9 @@
 
                             // 关闭弹出层
                             layer.close(index);
-                            parent.parent.location.reload();
                             var iframeIndex = parent.layer.getFrameIndex(window.name);
                             parent.layer.close(iframeIndex);
+                            parent.location.reload();
 
                         });
 
@@ -135,7 +135,6 @@
                 }
             });
 
-            return false;
         });
 
     });

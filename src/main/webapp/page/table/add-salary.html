@@ -64,21 +64,6 @@
 
             var json = JSON.stringify(user);
 
-
-            var index = layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            }, function () {
-
-                // 关闭弹出层
-                layer.close(index);
-
-                var iframeIndex = parent.layer.getFrameIndex(window.name);
-                parent.layer.close(iframeIndex);
-                // parent.parent.location.reload();
-            });
-
-
-            // JSON.stringify("{sa:1}");//jigg
             $.ajax({
                 // type: "get",
                 url: "/mavenWeb_war/salary?method=addSalary",
@@ -86,10 +71,6 @@
                 dataType:"json",
                 contentType: "application/json;charset=uft-8",
                 type: "POST",//方法
-                // data: JSON.stringify($('#edit-form').serialize()),
-                // data:$('#edit-form').serialize(),
-                // data:data.field,
-
                 data: json,
                 // data:{data:}
                 success: function (result) {
@@ -97,13 +78,11 @@
                         var index = layer.alert(JSON.stringify(data.field), {
                             title: '最终的提交信息'
                         }, function () {
-
                             // 关闭弹出层
                             layer.close(index);
-                            parent.parent.location.reload();
                             var iframeIndex = parent.layer.getFrameIndex(window.name);
                             parent.layer.close(iframeIndex);
-
+                            parent.location.reload();
                         });
                     }
                 },
@@ -111,8 +90,6 @@
                     layer.msg("错误码为200");
                 }
             });
-
-            return false;
         });
 
     });

@@ -89,7 +89,7 @@
 
             var json = JSON.stringify(user);
 
-
+            console.log(data)
             $.ajax({
                 // type: "get",
                 url: "/mavenWeb_war/salary?method=updateSalary",
@@ -97,9 +97,6 @@
                 dataType:"json",
                 contentType: "application/json;charset=uft-8",
                 type: "POST",//方法
-                // data: JSON.stringify($('#edit-form').serialize()),
-                // data:$('#edit-form').serialize(),
-                // data:data.field,
 
                 data: json,
                 // data:{data:}
@@ -111,9 +108,9 @@
 
                             // 关闭弹出层
                             layer.close(index);
-                            parent.parent.location.reload();
                             var iframeIndex = parent.layer.getFrameIndex(window.name);
                             parent.layer.close(iframeIndex);
+                            parent.location.reload();
 
                         });
                     }
