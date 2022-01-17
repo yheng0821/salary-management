@@ -75,21 +75,20 @@
             var salaryId  =  document.getElementById("edit_salaryId").value;
             var userId = document.getElementById("edit_userId").value;
             var userName = document.getElementById("userName").value;
-            var salary = document.getElementById("salary").value;
+            var salary_money = document.getElementById("salary").value;
             var monthId = document.getElementById("monthId").value;
 
 
-            var user = new Object();
-            user.salaryId = salaryId;
-            user.userId = userId;
-            user.userName = userName;
-            user.salary = salary;
-            user.monthId = monthId;
+            var salary = new Object();
+            salary.salaryId = salaryId;
+            salary.userId = userId;
+            salary.userName = userName;
+            salary.salary = salary_money;
+            salary.monthId = monthId;
 
 
-            var json = JSON.stringify(user);
+            var json = JSON.stringify(salary);
 
-            console.log(data)
             $.ajax({
                 // type: "get",
                 url: "/mavenWeb_war/salary?method=updateSalary",
@@ -102,7 +101,7 @@
                 // data:{data:}
                 success: function (result) {
                     if (result && result.retCode == 1) {
-                        var index = layer.alert(JSON.stringify(data.field), {
+                        var index = layer.alert(json, {
                             title: '最终的提交信息'
                         }, function () {
 

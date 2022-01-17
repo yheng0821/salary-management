@@ -46,7 +46,7 @@ public class UserDao {
                 sql = "SELECT * FROM tb_user WHERE user_name like ? limit ?,?";
                 prst = conn.prepareStatement(sql);
                 prst.setString(1,"%"+userName+"%");
-                prst.setInt(2,page);
+                prst.setInt(2,(page-1)*limit);
                 prst.setInt(3,limit);
             }
 

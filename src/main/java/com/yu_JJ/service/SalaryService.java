@@ -76,6 +76,7 @@ public class SalaryService {
             return new Result(0,"用户不存在",null);
         }
 
+//        salary.setUpdateTime();
         int i = salaryDao.updateSalary(salary);
         if (i > 0){
             return new Result(1,"success",salaryDao.querySalaryById(salary.getSalaryId()));

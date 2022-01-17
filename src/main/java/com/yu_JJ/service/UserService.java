@@ -3,7 +3,9 @@ package com.yu_JJ.service;
 import com.yu_JJ.bean.Result;
 import com.yu_JJ.bean.Salary;
 import com.yu_JJ.bean.User;
+import com.yu_JJ.dao.SalaryDao;
 import com.yu_JJ.dao.UserDao;
+import com.yu_JJ.utils.DateUtil;
 
 import java.util.List;
 
@@ -40,6 +42,7 @@ public class UserService {
     }
 
     public Result addUser(User user){
+        user.setCreateTime(DateUtil.getCurrentTime());
         int i = userDao.addUser(user);
         if (i > 0){
             return new Result(1,"success",user);
@@ -48,6 +51,27 @@ public class UserService {
     }
 
     public Result updateUser(User user){
+        UserDao userDao = new UserDao();
+        User oldUser = userDao.queryUserById(user.getUserId());
+        if (user.getAddress() == null){
+            user.setAddress(oldUser.getAddress());
+        }
+        if (user.getCreateTime() == null){
+            user.setCreateTime(oldUser.getCreateTime());
+        }
+        if (user.getCreater() == null){
+            user.setCreater(oldUser.getCreater());
+        }
+        if (user.getUpdateTime() == null){
+            user.setUpdateTime(oldUser.getUpdateTime());
+        }
+        if (user.getUpdater() == null){
+            user.setUpdater(oldUser.getUpdater());
+        }
+
+
+
+        user.setUpdateTime(DateUtil.getCurrentTime());
         int i = userDao.updateUser(user);
         if (i > 0){
             return new Result(1,"success",user);

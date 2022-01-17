@@ -74,6 +74,8 @@ public class OrganiseService {
             organise.setUpdater(oldOrganise.getUpdater());
         }
 
+        organise.setUpdater(DateUtil.getCurrentTime());
+
         int i = organiseDao.updateOrganise(organise);
         if (i > 0){
             return new Result(1,"success",organiseDao.queryOrganiseById(organise.getOrgId()));
