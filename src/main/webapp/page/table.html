@@ -59,9 +59,7 @@
         var $ = layui.jquery,
             form = layui.form,
             table = layui.table;
-
         table.render({
-
             elem: '#currentTableId',
             // url: '../api/table.json',
             url: '/mavenWeb_war/user?method=queryUserList',
@@ -72,10 +70,6 @@
                 layEvent: 'LAYTABLE_TIPS',
                 icon: 'layui-icon-tips'
             }],
-
-
-
-
             parseData:function (res) {
             return{
                 "status":res.retCode,
@@ -84,10 +78,6 @@
                 "data":res.retObj
                 };
             },
-
-
-
-
             //解析返回的数据
             response: {
                 statusName: 'status', //规定数据状态的字段名称，默认：code
@@ -138,10 +128,6 @@
 
             return false;
         });
-
-
-
-
         /**li
          * toolbar监听事件
          */
@@ -168,7 +154,8 @@
 
         //监听表格复选框选择
         table.on('checkbox(currentTableFilter)', function (obj) {
-            console.log(obj)
+            var userId = obj.data.userId;
+            console.log(userId);
         });
 
         table.on('tool(currentTableFilter)', function (obj) {

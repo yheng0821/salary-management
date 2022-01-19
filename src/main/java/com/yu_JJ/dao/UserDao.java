@@ -5,6 +5,10 @@ import com.yu_JJ.db.JDBCUtil;
 import com.yu_JJ.utils.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,6 +27,8 @@ import java.util.List;
  **/
 public class UserDao {
     private static final Logger logger = LoggerFactory.getLogger(UserDao.class);
+
+
     private ResultSet rst = null;
     Connection conn = null;
     PreparedStatement prst = null;
@@ -274,6 +280,92 @@ public class UserDao {
             JDBCUtil.closeResource(conn,prst,rst);
         }
         return count;
+    }
+
+    //
+    public int[] batchDelete(List<Object[]> list){
+        String sql = "delete from tb_user where user_id = ?";
+        ApplicationContext app =  new ClassPathXmlApplicationContext("bean1.xml");
+
+        JdbcTemplate bean = app.getBean(JdbcTemplate.class);
+        return bean.batchUpdate(sql,list);
+
+    }
+
+    public User queryUserFromSalaryBySalaryId(Integer id){
+        User user = new User();
+//        String sql = "SELECT u.* \n" +
+//                "from tb_salary s\n" +
+//                "LEFT JOIN tb_user u\n" +
+//                "ON s.user_id=u.user_id\n" +
+//                "WHERE s.salary_id=?";
+        String sql = "SELECT u.* \n" +
+                "from tb_salary s\n" +
+                "LEFT JOIN tb_user u\n" +
+                "ON s.user_id=u.user_id\n" +
+                "WHERE s.salary_id=?";
+        try {
+            conn = JDBCUtil.getConnection();
+            prst = conn.prepareStatement(sql);
+            prst.setInt(1,id);
+            ResultSet rst = prst.executeQuery();
+            if (rst.next()){
+                user.setUserId(rst.getInt(1));
+                user.setUserName(rst.getString(2));
+                user.setUserAcct(rst.getString(3));
+                user.setUserPwd(rst.getString(4));
+                user.setAlias(rst.getString(5));
+                user.setMail(rst.getString(6));
+                user.setTelephone(rst.getString(7));
+                user.setAddress(rst.getString(8));
+                if(rst.getTimestamp(9) != null)
+                    user.setCreateTime(rst.getTimestamp(9).toString());
+                user.setCreater(rst.getString(10));
+                if(rst.getTimestamp(11) != null)
+                    user.setUpdateTime(rst.getTimestamp(11).toString());
+                user.setUpdater(rst.getString(12));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+
+    public User queryUserByUserAcct(String userAcct){
+        User user = new User();
+        String sql = "SELECT u.*\n" +
+                "FROM tb_user u\n" +
+                "WHERE u.user_acct=?";
+        try {
+            conn = JDBCUtil.getConnection();
+            prst = conn.prepareStatement(sql);
+            prst.setString(1,userAcct);
+            ResultSet rst = prst.executeQuery();
+            if (rst.next()){
+                user.setUserId(rst.getInt(1));
+                user.setUserName(rst.getString(2));
+                user.setUserAcct(rst.getString(3));
+                user.setUserPwd(rst.getString(4));
+                user.setAlias(rst.getString(5));
+                user.setMail(rst.getString(6));
+                user.setTelephone(rst.getString(7));
+                user.setAddress(rst.getString(8));
+                if(rst.getTimestamp(9) != null)
+                    user.setCreateTime(rst.getTimestamp(9).toString());
+                user.setCreater(rst.getString(10));
+                if(rst.getTimestamp(11) != null)
+                    user.setUpdateTime(rst.getTimestamp(11).toString());
+                user.setUpdater(rst.getString(12));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+    public static void main(String[] args) {
+        UserDao userDao = new UserDao();
+        System.out.println(userDao.queryUserFromSalaryBySalaryId(2));
     }
 }
 

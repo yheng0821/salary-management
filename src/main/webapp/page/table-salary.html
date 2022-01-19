@@ -100,8 +100,8 @@
                 {type: "checkbox", width: 50},
                 {field: 'salaryId', width: 100, title: '薪水编号',sort: true},
                 {field: 'monthId', width: 120, title: '月份ID'},
-                {field: 'userName', width: 100, title: '用户名'},
-                {field: 'salary', width: 100, title: '当前薪资'},
+                {field: 'userName', width: 100, title:  '用户名'},
+                {field: 'salary', width: 100, title: '当前薪资',sort: true},
                 {field: 'createTime', width: 200, title: '创建时间'},
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
@@ -156,6 +156,8 @@
             } else if (obj.event === 'delete') {  // 监听删除操作
                 var checkStatus = table.checkStatus('currentTableId')
                     , data = checkStatus.data;
+
+
                 layer.alert(JSON.stringify(data));
             }
         });
@@ -172,7 +174,7 @@
                 ,field = obj.field; //得到字段
             console.log('[ID: '+ data.userId +'] ' + ' 字段更改')
             if (obj.event === 'edit') {
-                console.log('edit编辑')
+
                 var index = layer.open({
                     title: '编辑薪水',
                     type: 2,
@@ -226,8 +228,11 @@
                         data:{salaryId:salaryId},
                         // data:{data:}
                         success: function (result) {
-                            if (result && result.retCode == 1) {
-
+                            if (result && result.retCode == 1){
+                                obj.del();
+                                layer.close(index);
+                            }else if (result && result.retCode == 2) {
+                                layer.msg(result.retMsg)
                             }
                         },
                         error:function(d){
@@ -235,10 +240,6 @@
                         }
                     });
 
-
-
-                    obj.del();
-                    layer.close(index);
                 });
             }
         });

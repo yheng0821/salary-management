@@ -61,7 +61,12 @@
             <input type="email" name="email" placeholder="请输入地址" value="" class="layui-input" id="address">
         </div>
     </div>
-
+    <div class="layui-form-item">
+        <label class="layui-form-label">创建人</label>
+        <div class="layui-input-block">
+            <input type="text" name="creater" placeholder="请输入创建人" value="" class="layui-input" id="creater">
+        </div>
+    </div>
 
     <div class="layui-form-item">
         <div class="layui-input-block">
@@ -86,15 +91,21 @@
             var mail = document.getElementById("mail").value;
             var telephone = document.getElementById("telephone").value;
             var address = document.getElementById("address").value;
+            var creater = document.getElementById("creater").value;
 
             var user = new Object();
             user.userName = userName;
             user.userAcct = userAcct;
             user.userPwd = userPwd;
             user.alias = alias;
-            user.mail = mail;
-            user.telephone = telephone;
+            if (mail != ''){
+                user.mail = mail;
+            }
+            if (telephone != ''){
+                user.telephone = telephone;
+            }
             user.address = address;
+            user.creater=creater
 
             var json = JSON.stringify(user);
 
@@ -113,21 +124,23 @@
                 data: json,
 
                 success: function (result) {
+                    console.log(result)
                     if (result && result.retCode == 1) {
-
-
-                        var index = layer.alert(JSON.stringify(data.field), {
+                        var index = layer.alert(json, {
                             title: '最终的提交信息'
                         }, function () {
-
                             // 关闭弹出层
                             layer.close(index);
                             var iframeIndex = parent.layer.getFrameIndex(window.name);
                             parent.layer.close(iframeIndex);
                             parent.location.reload();
-
                         });
-
+                    } else if(result && result.retCode == 2 ){
+                        layer.msg("用户邮箱格式不正确")
+                    }else if(result && result.retCode == 3 ){
+                        layer.msg("用户手机格式不正确")
+                    }else if(result && result.retCode == 4 ){
+                        layer.msg(result.retMsg)
                     }
                 },
                 error:function(d){

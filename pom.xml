@@ -98,28 +98,44 @@
       <version>1.2.28</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>5.3.14</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>5.3.14</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>5.3.14</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring</artifactId>
+      <version>5.3.14</version>
+      <type>pom</type>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <version>5.3.14</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>druid</artifactId>
+      <version>1.2.8</version>
+    </dependency>
 
-<!--    &lt;!&ndash; https://mvnrepository.com/artifact/org.slf4j/slf4j-api &ndash;&gt;-->
-<!--    <dependency>-->
-<!--      <groupId>org.slf4j</groupId>-->
-<!--      <artifactId>slf4j-api</artifactId>-->
-<!--      <version>1.7.32</version>-->
-<!--    </dependency>-->
-
-<!--    &lt;!&ndash; https://mvnrepository.com/artifact/ch.qos.logback/logback-core &ndash;&gt;-->
-<!--    <dependency>-->
-<!--      <groupId>ch.qos.logback</groupId>-->
-<!--      <artifactId>logback-core</artifactId>-->
-<!--      <version>1.2.3</version>-->
-<!--    </dependency>-->
-
-<!--    &lt;!&ndash; https://mvnrepository.com/artifact/ch.qos.logback/logback-classic &ndash;&gt;-->
-<!--    <dependency>-->
-<!--      <groupId>ch.qos.logback</groupId>-->
-<!--      <artifactId>logback-classic</artifactId>-->
-<!--      <version>1.2.3</version>-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
 
   </dependencies>
 

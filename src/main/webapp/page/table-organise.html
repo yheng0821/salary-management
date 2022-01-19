@@ -217,15 +217,18 @@
                         // data:{data:}
                         success: function (result) {
                             if (result && result.retCode == 1) {
+                                obj.del();
+                                layer.close(index);
+                            }else if(result && result.retCode == 2){
+                                layer.msg(result.retMsg)
+                                layer.close(index);
+                                // layer.msg(result.retObj)
                             }
                         },
                         error:function(d){
                             layer.msg("错误码为200");
                         }
                     });
-
-                    obj.del();
-                    layer.close(index);
                 });
             }
         });

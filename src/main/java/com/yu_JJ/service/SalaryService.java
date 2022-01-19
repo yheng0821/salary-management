@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * @className: SalaryService
- * @description: TODO 类描述
+ * @description: 0失败 1成功 2删除薪水用户存在
  * @author: yheng
  * @date: 2022/1/14
  **/
@@ -85,6 +85,11 @@ public class SalaryService {
     }
 
     public Result deleteSalary(Integer id){
+        UserDao userDao = new UserDao();
+        User user = userDao.queryUserFromSalaryBySalaryId(id);
+        if (user.getUserId()!=0 && user.getUserAcct() != null){
+            return new Result(2,"该薪水用户存在,请先删除改用户"+user.getUserId(),user);
+        }
         int i = salaryDao.deleteSalary(id);
         if (i > 0){
             return new Result(1,"success",null);

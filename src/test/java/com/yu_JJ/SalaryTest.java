@@ -19,4 +19,10 @@ public class SalaryTest {
         List<Salary> salaries = salaryDao.querySalaryList("java",1,10);
         System.out.println(salaries);
     }
+
+    @Test
+    public void test(){
+        System.out.println("lion"!=null);
+        System.out.println(198!=0);
+    }
 }

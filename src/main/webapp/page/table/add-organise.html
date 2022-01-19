@@ -44,7 +44,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">创建人</label>
         <div class="layui-input-block">
-            <input type="text" name="org"   placeholder="请输入组织路径" value="" class="layui-input" id="creater">
+            <input type="text" name="org"   placeholder="请输入创建人" value="" class="layui-input" id="creater">
         </div>
     </div>
     <div class="layui-form-item">
@@ -98,7 +98,7 @@
                 // data:{data:}
                 success: function (result) {
                     if (result && result.retCode == 1) {
-                        var index = layer.alert(JSON.stringify(data.field), {
+                        var index = layer.alert(json, {
                             title: '最终的提交信息'
                         }, function () {
 

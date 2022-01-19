@@ -11,6 +11,7 @@ import com.yu_JJ.utils.DateUtil;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -84,6 +85,11 @@ public class OrganiseService {
     }
 
     public Result deleteOrganise(Integer id){
+//        organiseDao.deleteOrganiseRel(id);
+//        List<Integer> users = organiseDao.queryUsersByOrgId(id);
+//        if (users.size() >0 && users.get(0) != 0){
+//            return new Result(2,"该组织存在以下用户"+ users.toString(),users);
+//        }
         int i = organiseDao.deleteOrganise(id);
         if (i > 0){
             return new Result(1,"success",null);
@@ -91,4 +97,9 @@ public class OrganiseService {
         return new Result(0,"failed",null);
     }
 
+    public static void main(String[] args) {
+        OrganiseDao organiseDao = new OrganiseDao();
+        List<Integer> id = organiseDao.queryUsersByOrgId(20150093);
+        System.out.println(id.toString());
+    }
 }

@@ -6,12 +6,13 @@ import com.yu_JJ.bean.User;
 import com.yu_JJ.dao.SalaryDao;
 import com.yu_JJ.dao.UserDao;
 import com.yu_JJ.utils.DateUtil;
+import com.yu_JJ.utils.JudgeUtil;
 
 import java.util.List;
 
 /**
  * @className: UserService
- * @description: 用户登录服务
+ * @description: 用户登录服务0失败  1成功  1已存在用户
  * @author: yheng
  * @date: 2022/1/6
  **/
@@ -42,7 +43,26 @@ public class UserService {
     }
 
     public Result addUser(User user){
+        boolean isMail,isMobile ;
+        UserDao userDao = new UserDao();
         user.setCreateTime(DateUtil.getCurrentTime());
+        if (user.getMail() != null){
+            isMail = JudgeUtil.isEmail(user.getMail());
+            if (!isMail){
+                return new Result(2,"用户邮箱格式不正确",null);
+            }
+        }
+
+        User exist = userDao.queryUserByUserAcct(user.getUserAcct());
+        if(exist.getUserAcct() != null && exist.getUserId() !=0){
+            return new Result(4,"该用户账号已存在:"+exist.getUserAcct(),exist);
+        }
+        if (user.getTelephone() != null){
+            isMobile = JudgeUtil.isMobileNum(user.getTelephone());
+            if ((!isMobile)) {
+                return new Result(3,"用户手机格式不正确",null);
+            }
+        }
         int i = userDao.addUser(user);
         if (i > 0){
             return new Result(1,"success",user);
@@ -68,8 +88,23 @@ public class UserService {
         if (user.getUpdater() == null){
             user.setUpdater(oldUser.getUpdater());
         }
+        if (user.getAddress() == null){
+            user.setAddress(oldUser.getAddress());
+        }
 
-
+        boolean isMail,isMobile ;
+        if (user.getMail() != null){
+            isMail = JudgeUtil.isEmail(user.getMail());
+            if (!isMail){
+                return new Result(2,"用户邮箱格式不正确",null);
+            }
+        }
+        if (user.getTelephone() != null ){
+            isMobile = JudgeUtil.isMobileNum(user.getTelephone());
+            if ((!isMobile)) {
+                return new Result(3,"用户手机格式不正确",null);
+            }
+        }
 
         user.setUpdateTime(DateUtil.getCurrentTime());
         int i = userDao.updateUser(user);
@@ -103,6 +138,12 @@ public class UserService {
         return new Result(0,"failed",0,null);
     }
 
+    public Result batchDelete(List<Object[]> list){
+        if(userDao.batchDelete(list).length > 0){
+            return new Result(1,"success",null);
+        }
+        return new Result(0,"failed",0,null);
+    }
     public static void main(String[] args){
         UserService userService = new UserService();
 //        User user = new User();

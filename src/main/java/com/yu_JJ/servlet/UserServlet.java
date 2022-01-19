@@ -45,6 +45,8 @@ public class UserServlet extends HttpServlet {
 
         String method = req.getParameter("method");
         Result result = null;
+        String code = (String) req.getSession().getAttribute("checkcode");
+        System.out.print("验证码为"+code);
         if (!"".equals(method) || method != null) {
             if ("update".equals(method)) {//更新用户操作，传入user的json数据，由id对指定用户更新
                 User user = new User();
@@ -119,18 +121,26 @@ public class UserServlet extends HttpServlet {
                 Integer limit = Integer.valueOf(req.getParameter("limit"));
                 result = userService.queryUserList(userName, page, limit);
             } else if ("login".equals(method)) {                //用户登录验证
-//                JSONObject json = GetRequestJsonUtils.getRequestJsonObject(req);
-//                String userName = json.getString("userAcct");
-                String userAcct = req.getParameter("userAcct");
-                String userPwd = req.getParameter("userPwd");
-                result = userService.loginCheck(userAcct, userPwd);
-                if (result.getRetCode() == 1){
-                    req.getSession().setAttribute("userSession", (User)result.getRetObj());
+                String captcha = req.getParameter("captcha");
+                if (code .equals( captcha)){
+                    String userAcct = req.getParameter("userAcct");
+                    String userPwd = req.getParameter("userPwd");
+                    result = userService.loginCheck(userAcct, userPwd);
+                    if (result.getRetCode() == 1){
+                        req.getSession().setAttribute("userSession", (User)result.getRetObj());
+                    }
+                }else {
+                    result.setRetCode(2);
                 }
             } else if ("queryAllUser".equals(method)) {
                 Integer page = Integer.valueOf(req.getParameter("page"));
                 Integer limit = Integer.valueOf(req.getParameter("limit"));
                 result = userService.queryAllUser(page, limit);
+            } else if ("batchDelete".equals(method)) {
+                JSONObject json = GetRequestJsonUtils.getRequestJsonObject(req);
+
+
+//                result = userService.batchDelete();
             } else {
                 result.setRetMsg("请求不合法");
                 out.write("请求不合法");

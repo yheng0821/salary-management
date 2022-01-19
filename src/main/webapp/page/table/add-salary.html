@@ -28,12 +28,14 @@
             <input type="text" name="userName" lay-verify="required" lay-reqtext="月份不能为空" placeholder="请输入月份" value="" class="layui-input" id="monthId">
         </div>
     </div>
-</div>
-<div class="layui-form-item">
-    <label class="layui-form-label required">用户薪水</label>
-    <div class="layui-input-block">
-        <input type="text" name="userAcct" lay-verify="required" lay-reqtext="薪水不能为空" placeholder="请输入薪水" value="" class="layui-input" id="salary">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">用户薪水</label>
+        <div class="layui-input-block">
+            <input type="text" name="userAcct" lay-verify="required" lay-reqtext="薪水不能为空" placeholder="请输入薪水" value="" class="layui-input" id="salary">
+        </div>
     </div>
+
 </div>
 
 
@@ -75,7 +77,7 @@
                 // data:{data:}
                 success: function (result) {
                     if (result && result.retCode == 1) {
-                        var index = layer.alert(JSON.stringify(data.field), {
+                        var index = layer.alert(json, {
                             title: '最终的提交信息'
                         }, function () {
                             // 关闭弹出层
@@ -84,6 +86,9 @@
                             parent.layer.close(iframeIndex);
                             parent.location.reload();
                         });
+                    }
+                    else if (result && result.retCode == 0){
+                        layer.msg('用户不存在');
                     }
                 },
                 error:function(d){

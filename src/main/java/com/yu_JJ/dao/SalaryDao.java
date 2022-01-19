@@ -37,7 +37,8 @@ public class SalaryDao {
                 sql = "SELECT s.salary_id,s.month_id '月份ID',u.user_name '用户名称',s.salary 当月薪资 ,s.create_time '创建时间', s.user_id \n" +
                         "FROM tb_salary s,tb_user u\n" +
                         "WHERE s.user_id=u.user_id\n" +
-                        "LIMIT ?,?" ;
+                        "ORDER BY s.salary_id\n"+
+                        "LIMIT ?,?";
                 prst = conn.prepareStatement(sql);
                 prst.setInt(1,(page-1)*limit);
                 prst.setInt(2,limit);
@@ -46,6 +47,7 @@ public class SalaryDao {
                         "FROM tb_salary s,tb_user u\n" +
                         "WHERE s.user_id=u.user_id\n" +
                         "AND u.user_name LIKE ?\n" +
+                        "ORDER BY s.salary_id\n"+
                         "LIMIT ?,?";
                 conn = JDBCUtil.getConnection();
                 prst = conn.prepareStatement(sql);
@@ -225,4 +227,5 @@ public class SalaryDao {
         }
         return null;
     }
+
 }

@@ -3,6 +3,7 @@ package com.yu_JJ.dao;
 import com.sun.org.apache.xpath.internal.operations.Or;
 import com.yu_JJ.bean.Organise;
 import com.yu_JJ.bean.Salary;
+import com.yu_JJ.bean.User;
 import com.yu_JJ.db.JDBCUtil;
 import com.yu_JJ.utils.DateUtil;
 import org.slf4j.Logger;
@@ -190,5 +191,44 @@ public class OrganiseDao {
             JDBCUtil.closeResource(conn,prst,rst);
         }
         return 0;
+    }
+
+    public int deleteOrganiseRel(Integer id){
+        String sql = "delete from tb_user_org_rel where org_id=?";
+        try {
+            conn = JDBCUtil.getConnection();
+            prst = conn.prepareStatement(sql);
+            prst.setInt(1,id);
+            int i =  prst.executeUpdate();
+            if(i > 0){
+                return 1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            JDBCUtil.closeResource(conn,prst,rst);
+        }
+        return 0;
+    }
+
+    public List<Integer> queryUsersByOrgId(Integer id){
+        List<Integer> userList = new ArrayList<Integer>();
+        String sql = "SELECT uo.* \n" +
+                "FROM tb_user_org_rel uo\n" +
+                "LEFT JOIN tb_user u\n" +
+                "ON u.user_id=uo.user_id\n" +
+                "WHERE uo.org_id=?";
+        try {
+            conn = JDBCUtil.getConnection();
+            prst = conn.prepareStatement(sql);
+            prst.setInt(1,id);
+            rst = prst.executeQuery();
+            while (rst.next()){
+                userList.add(rst.getInt(2));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
     }
 }
