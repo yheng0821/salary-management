@@ -140,7 +140,7 @@ public class UserServlet extends HttpServlet {
                 JSONObject json = GetRequestJsonUtils.getRequestJsonObject(req);
 
 
-//                result = userService.batchDelete();
+
             } else {
                 result.setRetMsg("请求不合法");
                 out.write("请求不合法");

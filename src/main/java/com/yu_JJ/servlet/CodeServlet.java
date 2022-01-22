@@ -22,6 +22,7 @@ public class CodeServlet extends HttpServlet {
     //生成验证码的servletpublic class CreateCode extends HttpServlet {
 
 
+    @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -73,6 +74,7 @@ public class CodeServlet extends HttpServlet {
     }
 
 
+    @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.doGet(request, response);
